@@ -315,13 +315,15 @@ function renderUpgrades(upgrades) {
     cost.className = 'upgrade-cost';
     cost.textContent = adjustedCost;
 
-    const ownedBadge = document.createElement('span');
-    ownedBadge.className = 'upgrade-owned';
-    ownedBadge.textContent = owned > 0 ? `${owned}/${upgrade.max}` : '';
-
     card.appendChild(image);
     card.appendChild(cost);
-    card.appendChild(ownedBadge);
+
+    if (owned > 0 && upgrade.max > 1) {
+        const ownedBadge = document.createElement('span');
+        ownedBadge.className = 'upgrade-owned';
+        ownedBadge.textContent = `${owned}/${upgrade.max}`;
+        card.appendChild(ownedBadge);
+    }
 
     card.addEventListener('mouseenter', () => {
       showTooltip(upgrade);

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Shop Calculator</title>
+  <title>Nullscape Shop Calculator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,18 +13,17 @@
     </header>
 
     <section aria-labelledby="controls-heading">
-      <h2 id="controls-heading">Controls</h2>
       <div class="controls">
-        <div class="field">
-          <label for="current-money">Golden Gifts</label>
-          <input id="current-money" name="current-money" type="number" placeholder="0">
-        </div>
-
         <div class="field">
           <label for="current-level">Current Level</label>
           <input id="current-level" name="current-level" type="number" placeholder="1">
         </div>
-
+        
+        <div class="field">
+          <label for="player-count">Player Count</label>
+          <input id="player-count" name="player-count" type="number" min="1" max="20" placeholder="1">
+        </div>
+        
         <div class="field">
           <label for="difficulty">Difficulty</label>
           <select id="difficulty" name="difficulty">
@@ -35,14 +34,15 @@
         </div>
 
         <div class="field">
-          <label for="player-count">Player Count</label>
-          <input id="player-count" name="player-count" type="number" min="1" max="20" placeholder="1">
+          <label for="current-money">Golden Gifts</label>
+          <input id="current-money" name="current-money" type="number" placeholder="0">
         </div>
+
       </div>
     </section>
 
     <section class="upgrades" aria-labelledby="upgrades-heading">
-    <h2 id="upgrades-heading">Upgrades</h2>
+    <h2 id="upgrades-heading">Owned Upgrades</h2>
         <div class="upgrade-grid" id="upgrade-grid"></div>
     </section>
 
