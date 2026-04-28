@@ -93,3 +93,26 @@
         grid-template-columns: 1fr;
       }
     }
+
+.upgrade-card.not-yet-available {
+  opacity: 0.55;
+}
+
+.upgrade-card.owned {
+  background: #1d4ed8;
+}
+
+.upgrade-card.fully-owned {
+  outline: 2px solid #93c5fd;
+}
+
+.upgrade-owned {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.8rem;
+}

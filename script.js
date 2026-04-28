@@ -8,6 +8,7 @@ const playerCountInput = document.getElementById('player-count');
 
 let allUpgrades = [];
 let activeUpgrade = null;
+const ownedUpgrades = new Map();
 
 async function loadUpgrades() {
   try {
@@ -18,7 +19,7 @@ async function loadUpgrades() {
     }
 
     allUpgrades = await response.json();
-    renderUpgrades(allUpgrades);
+    refreshUI();
   } catch (error) {
     console.error('Failed to load upgrades:', error);
     upgradeGrid.innerHTML = '<p>Could not load upgrades.</p>';
@@ -53,13 +54,43 @@ function canAffordUpgrade(upgrade, settings) {
   return settings.currentMoney >= adjustedCost && settings.currentLevel >= upgrade.minLevel;
 }
 
+function isUpgradeEligibleForRun(upgrade, settings) {
+  return true;
+}
+
+function getOwnedCount(upgradeName) {
+  return ownedUpgrades.get(upgradeName) || 0;
+}
+
+function cycleOwnedCount(upgrade) {
+  const currentOwned = getOwnedCount(upgrade.name);
+  const nextOwned = currentOwned >= upgrade.max ? 0 : currentOwned + 1;
+
+  if (nextOwned === 0) {
+    ownedUpgrades.delete(upgrade.name);
+  } else {
+    ownedUpgrades.set(upgrade.name, nextOwned);
+  }
+}
+
+function getOwnedUpgradesArray() {
+  return allUpgrades
+    .filter((upgrade) => ownedUpgrades.has(upgrade.name))
+    .map((upgrade) => ({
+      ...upgrade,
+      owned: ownedUpgrades.get(upgrade.name),
+    }));
+}
+
 function showTooltip(upgrade) {
   const settings = getCurrentSettings();
   const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
+  const owned = getOwnedCount(upgrade.name);
 
   tooltip.innerHTML = `
     <h3>${upgrade.name}</h3>
     <p><strong>Cost:</strong> ${adjustedCost}</p>
+    <p><strong>Owned:</strong> ${owned}/${upgrade.max}</p>
     <p><strong>Max:</strong> ${upgrade.max}</p>
     <p><strong>Min level:</strong> ${upgrade.minLevel}</p>
     <p>${upgrade.description}</p>
@@ -93,21 +124,43 @@ function moveTooltip(event) {
   tooltip.style.top = `${y}px`;
 }
 
+function getVisibleSortedUpgrades(upgrades, settings) {
+  return [...upgrades]
+    .filter((upgrade) => isUpgradeEligibleForRun(upgrade, settings))
+    .sort((a, b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name));
+}
+
 function renderUpgrades(upgrades) {
   const settings = getCurrentSettings();
+  const visibleUpgrades = getVisibleSortedUpgrades(upgrades, settings);
+
   upgradeGrid.innerHTML = '';
 
-  upgrades.forEach((upgrade) => {
+  visibleUpgrades.forEach((upgrade) => {
     const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
     const affordable = canAffordUpgrade(upgrade, settings);
+    const availableByLevel = settings.currentLevel >= upgrade.minLevel;
+    const owned = getOwnedCount(upgrade.name);
 
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'upgrade-card';
-    card.setAttribute('aria-label', `${upgrade.name}, cost ${adjustedCost}`);
+    card.setAttribute('aria-label', `${upgrade.name}, cost ${adjustedCost}, owned ${owned} of ${upgrade.max}`);
 
     if (!affordable) {
       card.classList.add('locked');
+    }
+
+    if (!availableByLevel) {
+      card.classList.add('not-yet-available');
+    }
+
+    if (owned > 0) {
+      card.classList.add('owned');
+    }
+
+    if (owned >= upgrade.max) {
+      card.classList.add('fully-owned');
     }
 
     const image = document.createElement('img');
@@ -121,16 +174,25 @@ function renderUpgrades(upgrades) {
     cost.className = 'upgrade-cost';
     cost.textContent = adjustedCost;
 
+    const ownedBadge = document.createElement('span');
+    ownedBadge.className = 'upgrade-owned';
+    ownedBadge.textContent = owned > 0 ? `${owned}/${upgrade.max}` : '';
+
     card.appendChild(image);
     card.appendChild(cost);
+    card.appendChild(ownedBadge);
 
     card.addEventListener('mouseenter', () => {
       showTooltip(upgrade);
     });
 
     card.addEventListener('mousemove', moveTooltip);
-
     card.addEventListener('mouseleave', hideTooltip);
+
+    card.addEventListener('click', () => {
+      cycleOwnedCount(upgrade);
+      refreshUI();
+    });
 
     upgradeGrid.appendChild(card);
   });
@@ -142,6 +204,8 @@ function refreshUI() {
   if (activeUpgrade) {
     showTooltip(activeUpgrade);
   }
+
+  console.log(getOwnedUpgradesArray());
 }
 
 [currentMoneyInput, currentLevelInput, playerCountInput].forEach((input) => {
