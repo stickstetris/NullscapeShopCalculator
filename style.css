@@ -1,13 +1,81 @@
 
-    body {
-      margin: 16px;
-      font-family: sans-serif;
-    }
+body {
+  margin: 16px;
+  font-family: sans-serif;
+  background: #000;
+  color: #fff;
+}
 
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+section {
+  margin-bottom: 24px;
+}
+
+.upgrades,
+.shop {
+  padding: 16px;
+  border: 2px solid #a855f7;
+  border-radius: 14px;
+  background: linear-gradient(
+    to bottom,
+    rgb(168 85 247 / 0.22),
+    rgb(168 85 247 / 0)
+  );
+}
+
+.upgrades h2,
+.shop h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #f5e9ff;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: 1px solid #7e22ce;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.field input::placeholder {
+  color: #bbb;
+}
+
+.upgrade-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  max-width: 280px;
+  padding: 10px 12px;
+  border: 1px solid #a855f7;
+  background: #111;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.upgrades,
+.shop {
+  padding: 16px;
+  border: 2px solid #a855f7;
+  border-radius: 14px;
+  background: linear-gradient(
+    to bottom,
+    rgb(168 85 247 / 0.22),
+    rgb(168 85 247 / 0)
+  );
+  box-shadow: 0 0 0 1px rgb(168 85 247 / 0.15), 0 0 24px rgb(168 85 247 / 0.12);
+}
 
     .controls {
       display: grid;
@@ -36,18 +104,31 @@
 .upgrade-card {
   padding: 0;
   border: 0;
-  background: none;
+  background: transparent;
   cursor: pointer;
   position: relative;
+  color: #fff;
 }
 
 .upgrade-card img {
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
-  background: #e0e0e0;
-  border: 1px solid #999;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+}
+
+.upgrade-cost {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .upgrade-tooltip {
@@ -142,8 +223,21 @@
   padding: 0.75rem;
   border: 1px solid #444;
   border-radius: 10px;
-  background: #1f1f1f;
-  color: white;
+  background: transparent;
+  color: #fff;
+}
+
+.shop-card img {
+  display: block;
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.shop-name,
+.shop-cost {
+  color: #fff;
 }
 
 .shop-card.selected {
@@ -163,4 +257,20 @@
 
 .shop-cost {
   font-weight: 700;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: 1px solid #7e22ce;
+  border-radius: 8px;
+  padding: 8px 10px;
 }
