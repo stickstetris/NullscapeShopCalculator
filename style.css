@@ -294,3 +294,34 @@ section {
   text-underline-offset: 2px;
   cursor: help;
 }
+
+.page-footer {
+  margin-top: 28px;
+  padding-top: 12px;
+  text-align: center;
+  color: #c084fc;
+  border-top: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.bottom-gif {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-gif img {
+  display: block;
+  max-width: min(100%, 320px);
+  height: auto;
+}
+
+.page-footer a,
+.page-credit a {
+  color: #d8b4fe;
+  text-decoration: underline;
+}
+
+.page-footer a:hover,
+.page-credit a:hover {
+  color: #f5d0fe;
+}
