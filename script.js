@@ -15,6 +15,55 @@ let allUpgrades = [];
 let activeUpgrade = null;
 const ownedUpgrades = new Map();
 
+const STORAGE_KEY = 'nullscape-shop-calculator-state';
+
+function saveState() {
+  const settings = getCurrentSettings();
+
+  const state = {
+    currentMoney: settings.currentMoney,
+    currentLevel: settings.currentLevel,
+    difficulty: settings.difficulty,
+    playerCount: settings.playerCount,
+    ownedUpgrades: Array.from(ownedUpgrades.entries()),
+  };
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('Could not save state:', error);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    if (!raw) {
+      return;
+    }
+
+    const state = JSON.parse(raw);
+
+    currentMoneyInput.value = state.currentMoney ?? '';
+    currentLevelInput.value = state.currentLevel ?? '';
+    difficultySelect.value = state.difficulty ?? 'Standard';
+    playerCountInput.value = state.playerCount ?? '';
+
+    ownedUpgrades.clear();
+
+    if (Array.isArray(state.ownedUpgrades)) {
+      state.ownedUpgrades.forEach(([name, count]) => {
+        if (typeof name === 'string' && typeof count === 'number' && count > 0) {
+          ownedUpgrades.set(name, count);
+        }
+      });
+    }
+  } catch (error) {
+    console.warn('Could not load state:', error);
+  }
+}
+
 async function loadUpgrades() {
   try {
     const response = await fetch('./upgrades.json');
@@ -24,6 +73,7 @@ async function loadUpgrades() {
     }
 
     allUpgrades = await response.json();
+    loadState();
     refreshUI();
   } catch (error) {
     console.error('Failed to load upgrades:', error);
@@ -333,8 +383,9 @@ function renderUpgrades(upgrades) {
     card.addEventListener('mouseleave', hideTooltip);
 
     card.addEventListener('click', () => {
-      cycleOwnedCount(upgrade);
-      refreshUI();
+        cycleOwnedCount(upgrade);
+        refreshUI();
+        saveState();
     });
 
     upgradeGrid.appendChild(card);
@@ -420,9 +471,15 @@ function refreshUI() {
 }
 
 [currentMoneyInput, currentLevelInput, playerCountInput].forEach((input) => {
-  input.addEventListener('input', refreshUI);
+  input.addEventListener('input', () => {
+    refreshUI();
+    saveState();
+  });
 });
 
-difficultySelect.addEventListener('input', refreshUI);
+difficultySelect.addEventListener('input', () => {
+  refreshUI();
+  saveState();
+});
 
 loadUpgrades();
