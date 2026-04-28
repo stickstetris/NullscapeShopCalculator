@@ -1,0 +1,74 @@
+
+    body {
+      margin: 16px;
+      font-family: sans-serif;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0 24px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+    }
+
+    .upgrades {
+      width: 75%;
+      margin: 0 auto;
+    }
+
+    .upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 12px;
+}
+
+.upgrade-grid img,
+.upgrade-card {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.upgrade-grid img {
+  object-fit: cover;
+  background: #e0e0e0;
+  border: 1px solid #999;
+}
+
+.upgrade-card {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+    @media (max-width: 800px) {
+      .controls {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .upgrades {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+    }
