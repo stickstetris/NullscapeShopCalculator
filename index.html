@@ -1,99 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nullscape Shop Calculator</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main>
-    <header class="page-header">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nullscape Shop Calculator</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main>
+      <header class="page-header">
         <img
-            class="title-image"
-            src="https://static.wikitide.net/nullscapewiki/thumb/8/8d/Upgradesheader.png/1250px-Upgradesheader.png"
-            alt="Nullscape Upgrades"
-            width="1250"
-            height="250"
+          class="title-image"
+          src="https://static.wikitide.net/nullscapewiki/thumb/8/8d/Upgradesheader.png/1250px-Upgradesheader.png"
+          alt="Nullscape Upgrades"
+          width="1250"
+          height="250"
         >
-    </header>
+      </header>
 
-    <section aria-labelledby="controls-heading">
-      <div class="controls">
-        <div class="field">
-          <label for="current-level">Current Level</label>
-          <input id="current-level" name="current-level" type="number" placeholder="3">
-        </div>
-        
-        <div class="field">
+      <section aria-labelledby="controls-heading">
+        <div class="controls">
+          <div class="field">
+            <label for="current-level">Current Level</label>
+            <input id="current-level" name="current-level" type="number" placeholder="3">
+          </div>
+
+          <div class="field">
             <label for="player-count">
-                Player Count
-                <span
+              Player Count
+              <span
                 class="help-mark"
                 title="Does not go down when players leave. A lobby with 12 players currently may have an internal player count of 14 if there were 2 players that had left."
-                >(?)</span>
+              >(?)</span>
             </label>
-        <input id="player-count" name="player-count" type="number" min="1" max="20" placeholder="1">
-        </div>
-        
-        <div class="field">
-          <label for="difficulty">Difficulty</label>
-          <select id="difficulty" name="difficulty">
-            <option>Casual</option>
-            <option selected>Standard</option>
-            <option>Extreme</option>
-          </select>
-        </div>
+            <input
+              id="player-count"
+              name="player-count"
+              type="number"
+              min="1"
+              max="20"
+              placeholder="1"
+            >
+          </div>
 
-        <div class="field">
-          <label for="current-money">Golden Gifts</label>
-          <input id="current-money" name="current-money" type="number" placeholder="0">
+          <div class="field">
+            <label for="difficulty">Difficulty</label>
+            <select id="difficulty" name="difficulty">
+              <option>Casual</option>
+              <option selected>Standard</option>
+              <option>Extreme</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="current-money">Golden Gifts</label>
+            <input id="current-money" name="current-money" type="number" placeholder="0">
+          </div>
+
+          <div class="field curse-field">
+            <span class="field-title visually-hidden-label">Nothing? Curse</span>
+            <label
+              for="nothing-curse"
+              class="curse-control"
+              title="Nothing? reduces shop prices by 15%."
+            >
+              <input id="nothing-curse" name="nothing-curse" type="checkbox">
+              <img
+                src="https://static.wikitide.net/nullscapewiki/thumb/c/cd/NothingP4.png/126px-NothingP4.png"
+                alt="Nothing? curse"
+                width="32"
+                height="32"
+                loading="lazy"
+              >
+            </label>
+          </div>
         </div>
+      </section>
 
-        <div class="field curse-field">
-  <span class="field-title visually-hidden-label">Nothing? Curse</span>
-  <label
-    for="nothing-curse"
-    class="curse-control"
-    title="Nothing? Reduces shop prices by 15%."
-  >
-    <input id="nothing-curse" name="nothing-curse" type="checkbox">
-    <img
-      src="https://static.wikitide.net/nullscapewiki/thumb/c/cd/NothingP4.png/126px-NothingP4.png"
-      alt="Nothing? curse"
-      width="32"
-      height="32"
-      loading="lazy"
-    >
-  </label>
-</div>
-      </div>
-    </section>
-
-    <section class="upgrades" aria-labelledby="upgrades-heading">
-    <h2 id="upgrades-heading">Owned Upgrades</h2>
+      <section class="upgrades" aria-labelledby="upgrades-heading">
+        <h2 id="upgrades-heading">Owned Upgrades</h2>
         <div class="upgrade-grid" id="upgrade-grid"></div>
-    </section>
+      </section>
 
-    <section class="shop" aria-labelledby="shop-heading">
-  <h2 id="shop-heading">Shop</h2>
-  <p id="shop-money" class="shop-money" aria-live="polite" aria-atomic="true"></p>
-  <div class="shop-grid" id="shop-grid"></div>
-</section>
+      <section class="shop" aria-labelledby="shop-heading">
+        <h2 id="shop-heading">Shop</h2>
+        <p
+          id="shop-money"
+          class="shop-money"
+          aria-live="polite"
+          aria-atomic="true"
+        ></p>
+        <div class="shop-grid" id="shop-grid"></div>
+      </section>
 
-    <div id="upgrade-tooltip" class="upgrade-tooltip" hidden></div>
+      <div id="upgrade-tooltip" class="upgrade-tooltip" hidden></div>
 
-<footer class="page-footer">
-  <small>
-  Calculator made by
-  <a href="https://www.youtube.com/@sticks_sticks" target="_blank" rel="noopener noreferrer">Sticks</a>
-</small>
-  <div class="bottom-gif">
-  <img src="assets/nullscape_gn.gif" alt="" loading="lazy">
-</div>
-</footer>
+      <footer class="page-footer">
+        <small>
+          Calculator made by
+          <a
+            href="https://www.youtube.com/@sticks_sticks"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Sticks</a>
+        </small>
 
-<script src="./script.js" defer></script>
-  </main>
-</body>
+        <div class="bottom-gif">
+          <img src="assets/nullscape_gn.gif" alt="" loading="lazy">
+        </div>
+      </footer>
+
+      <script src="./script.js" defer></script>
+    </main>
+  </body>
 </html>

@@ -1,3 +1,12 @@
+/* --------------------------------------------------
+   Global reset & base layout
+-------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 body {
   margin: 16px;
@@ -11,10 +20,14 @@ main {
   margin: 0 auto;
 }
 
+/* --------------------------------------------------
+   Header
+-------------------------------------------------- */
+
 .page-header {
   display: flex;
   justify-content: center;
-  margin: 0 0 20px;
+  margin-bottom: 20px;
 }
 
 .title-image {
@@ -22,6 +35,10 @@ main {
   width: min(100%, 700px);
   height: auto;
 }
+
+/* --------------------------------------------------
+   Sections & panels
+-------------------------------------------------- */
 
 section {
   margin-bottom: 24px;
@@ -37,6 +54,9 @@ section {
     rgb(168 85 247 / 0.22),
     rgb(168 85 247 / 0)
   );
+  box-shadow:
+    0 0 0 1px rgb(168 85 247 / 0.15),
+    0 0 24px rgb(168 85 247 / 0.12);
 }
 
 .upgrades h2,
@@ -46,48 +66,9 @@ section {
   color: #f5e9ff;
 }
 
-.field input,
-.field select {
-  width: 100%;
-  background: #111;
-  color: #fff;
-  border: 1px solid #7e22ce;
-  border-radius: 8px;
-  padding: 8px 10px;
-}
-
-.field input::placeholder {
-  color: #bbb;
-}
-
-.upgrade-tooltip {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  max-width: 280px;
-  padding: 10px 12px;
-  border: 1px solid #a855f7;
-  background: #111;
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  pointer-events: none;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.upgrades,
-.shop {
-  padding: 16px;
-  border: 2px solid #a855f7;
-  border-radius: 14px;
-  background: linear-gradient(
-    to bottom,
-    rgb(168 85 247 / 0.22),
-    rgb(168 85 247 / 0)
-  );
-  box-shadow: 0 0 0 1px rgb(168 85 247 / 0.15), 0 0 24px rgb(168 85 247 / 0.12);
-}
+/* --------------------------------------------------
+   Controls
+-------------------------------------------------- */
 
 .controls {
   display: grid;
@@ -108,10 +89,84 @@ section {
   font-weight: 600;
 }
 
-    .field input,
-    .field select {
-      width: 100%;
-    }
+.field input,
+.field select {
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: 1px solid #7e22ce;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.field input::placeholder {
+  color: #bbb;
+}
+
+.help-mark {
+  color: #d8b4fe;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+/* Nothing? curse control */
+
+.curse-field {
+  width: max-content;
+  justify-self: start;
+}
+
+.curse-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+}
+
+.curse-control img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.curse-control input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #a855f7;
+  margin: 0;
+}
+
+.visually-hidden-label {
+  visibility: hidden;
+}
+
+/* Responsive controls grid */
+
+@media (max-width: 1000px) {
+  .controls {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .controls {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------
+   Upgrades grid & cards
+-------------------------------------------------- */
 
 .upgrade-grid {
   display: grid;
@@ -149,53 +204,6 @@ section {
   font-weight: 700;
 }
 
-.upgrade-tooltip {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  max-width: 280px;
-  padding: 10px 12px;
-  border: 1px solid #999;
-  background: white;
-  color: #111;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  pointer-events: none;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.upgrade-tooltip[hidden] {
-  display: none;
-}
-
-.upgrade-tooltip h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.upgrade-tooltip p {
-  margin: 4px 0;
-}
-
-    @media (max-width: 1000px) {
-  .controls {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 700px) {
-  .controls {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 500px) {
-  .controls {
-    grid-template-columns: 1fr;
-  }
-}
-
 .upgrade-card.not-yet-available,
 .upgrade-card.missing-prerequisite {
   opacity: 0.55;
@@ -216,9 +224,46 @@ section {
   padding: 2px 6px;
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.75);
-  color: white;
+  color: #fff;
   font-size: 0.8rem;
 }
+
+/* --------------------------------------------------
+   Tooltip
+-------------------------------------------------- */
+
+.upgrade-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  max-width: 280px;
+  padding: 10px 12px;
+  border: 1px solid #a855f7;
+  background: #111;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.upgrade-tooltip[hidden] {
+  display: none;
+}
+
+.upgrade-tooltip h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.upgrade-tooltip p {
+  margin: 4px 0;
+}
+
+/* --------------------------------------------------
+   Shop
+-------------------------------------------------- */
 
 .shop {
   margin-top: 2rem;
@@ -279,29 +324,9 @@ section {
   font-weight: 700;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.field input,
-.field select {
-  width: 100%;
-  background: #111;
-  color: #fff;
-  border: 1px solid #7e22ce;
-  border-radius: 8px;
-  padding: 8px 10px;
-}
-
-.help-mark {
-  color: #d8b4fe;
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  cursor: help;
-}
+/* --------------------------------------------------
+   Footer & extras
+-------------------------------------------------- */
 
 .page-footer {
   margin-top: 28px;
@@ -332,35 +357,4 @@ section {
 .page-footer a:hover,
 .page-credit a:hover {
   color: #f5d0fe;
-}
-
-.curse-field {
-  width: max-content;
-  justify-self: start;
-}
-
-.curse-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 38px;
-}
-
-.curse-control img {
-  display: block;
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-  background: transparent;
-}
-
-.curse-control input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #a855f7;
-  margin: 0;
-}
-
-.visually-hidden-label {
-  visibility: hidden;
 }
