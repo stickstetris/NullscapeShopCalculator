@@ -6,6 +6,11 @@ const currentLevelInput = document.getElementById('current-level');
 const difficultySelect = document.getElementById('difficulty');
 const playerCountInput = document.getElementById('player-count');
 
+const shopGrid = document.getElementById('shop-grid');
+const shopMoney = document.getElementById('shop-money');
+
+const selectedShopItems = new Set();
+
 let allUpgrades = [];
 let activeUpgrade = null;
 const ownedUpgrades = new Map();
@@ -140,6 +145,77 @@ function getOwnedUpgradesArray() {
     }));
 }
 
+function isAvailableForShop(upgrade, settings) {
+  const availableByLevel = settings.currentLevel >= upgrade.minLevel;
+  const prerequisiteMet = isPrerequisiteMet(upgrade);
+  const visibleForRun = shouldShowUpgrade(upgrade, settings);
+  const owned = getOwnedCount(upgrade.name);
+
+  return visibleForRun && availableByLevel && prerequisiteMet && owned < upgrade.max;
+}
+
+function getShopItems(upgrades, settings) {
+  return [...upgrades]
+    .filter((upgrade) => isAvailableForShop(upgrade, settings))
+    .sort((a, b) => a.minLevel - b.minLevel || a.cost - b.cost || a.name.localeCompare(b.name));
+}
+
+function getShopItemKey(upgrade) {
+  return upgrade.name;
+}
+
+function getSelectedShopCost(settings) {
+  let total = 0;
+
+  selectedShopItems.forEach((upgradeName) => {
+    const upgrade = allUpgrades.find((item) => item.name === upgradeName);
+
+    if (upgrade) {
+      total += getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
+    }
+  });
+
+  return total;
+}
+
+function getRemainingMoney(settings) {
+  return settings.currentMoney - getSelectedShopCost(settings);
+}
+
+function canSelectShopItem(upgrade, settings) {
+  const itemKey = getShopItemKey(upgrade);
+  const alreadySelected = selectedShopItems.has(itemKey);
+
+  if (alreadySelected) {
+    return true;
+  }
+
+  const remainingMoney = getRemainingMoney(settings);
+  const cost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
+
+  return remainingMoney >= cost;
+}
+
+function toggleShopItem(upgrade) {
+  const itemKey = getShopItemKey(upgrade);
+
+  if (selectedShopItems.has(itemKey)) {
+    selectedShopItems.delete(itemKey);
+  } else {
+    selectedShopItems.add(itemKey);
+  }
+}
+
+function pruneInvalidShopSelections(settings) {
+  const validNames = new Set(getShopItems(allUpgrades, settings).map((upgrade) => upgrade.name));
+
+  for (const itemName of selectedShopItems) {
+    if (!validNames.has(itemName)) {
+      selectedShopItems.delete(itemName);
+    }
+  }
+}
+
 function showTooltip(upgrade) {
   const settings = getCurrentSettings();
   const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
@@ -263,14 +339,82 @@ function renderUpgrades(upgrades) {
   });
 }
 
+function renderShop(upgrades) {
+  const settings = getCurrentSettings();
+  const shopItems = getShopItems(upgrades, settings);
+  const remainingMoney = getRemainingMoney(settings);
+
+  shopMoney.textContent = `Golden Gifts left: ${remainingMoney}`;
+
+  shopGrid.innerHTML = '';
+
+  shopItems.forEach((upgrade) => {
+    const cost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
+    const itemKey = getShopItemKey(upgrade);
+    const selected = selectedShopItems.has(itemKey);
+    const affordableNow = canSelectShopItem(upgrade, settings);
+
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'shop-card';
+    card.setAttribute('aria-label', `${upgrade.name}, cost ${cost}`);
+
+    if (selected) {
+      card.classList.add('selected');
+    }
+
+    if (!selected && !affordableNow) {
+      card.classList.add('unaffordable');
+    }
+
+    const image = document.createElement('img');
+    image.src = upgrade.image;
+    image.alt = upgrade.name;
+    image.width = 84;
+    image.height = 84;
+    image.loading = 'lazy';
+
+    const name = document.createElement('span');
+    name.className = 'shop-name';
+    name.textContent = upgrade.name;
+
+    const price = document.createElement('span');
+    price.className = 'shop-cost';
+    price.textContent = `${cost} GG`;
+
+    card.appendChild(image);
+    card.appendChild(name);
+    card.appendChild(price);
+
+    card.addEventListener('click', () => {
+      const currentSettings = getCurrentSettings();
+      const selectable = canSelectShopItem(upgrade, currentSettings);
+
+      if (!selected && !selectable) {
+        return;
+      }
+
+      toggleShopItem(upgrade);
+      refreshUI();
+    });
+
+    shopGrid.appendChild(card);
+  });
+}
+
 function refreshUI() {
+  const settings = getCurrentSettings();
+
+  pruneInvalidShopSelections(settings);
   renderUpgrades(allUpgrades);
+  renderShop(allUpgrades);
 
   if (activeUpgrade) {
     showTooltip(activeUpgrade);
   }
 
   console.log(getOwnedUpgradesArray());
+  console.log([...selectedShopItems]);
 }
 
 [currentMoneyInput, currentLevelInput, playerCountInput].forEach((input) => {
