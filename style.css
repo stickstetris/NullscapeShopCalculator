@@ -89,18 +89,24 @@ section {
   box-shadow: 0 0 0 1px rgb(168 85 247 / 0.15), 0 0 24px rgb(168 85 247 / 0.12);
 }
 
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin: 16px 0 24px;
-    }
+.controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) 30px;
+  gap: 12px;
+  margin: 16px 0 24px;
+  align-items: end;
+}
 
-    .field label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
+.field {
+  min-width: 0;
+}
+
+.field label,
+.field-title {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
 
     .field input,
     .field select {
@@ -172,21 +178,23 @@ section {
   margin: 4px 0;
 }
 
-    @media (max-width: 800px) {
-      .controls {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    @media (max-width: 1000px) {
+  .controls {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
-      .upgrades {
-        width: 100%;
-      }
-    }
+@media (max-width: 700px) {
+  .controls {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-    @media (max-width: 500px) {
-      .controls {
-        grid-template-columns: 1fr;
-      }
-    }
+@media (max-width: 500px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
 
 .upgrade-card.not-yet-available,
 .upgrade-card.missing-prerequisite {
@@ -324,4 +332,35 @@ section {
 .page-footer a:hover,
 .page-credit a:hover {
   color: #f5d0fe;
+}
+
+.curse-field {
+  width: max-content;
+  justify-self: start;
+}
+
+.curse-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+}
+
+.curse-control img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.curse-control input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #a855f7;
+  margin: 0;
+}
+
+.visually-hidden-label {
+  visibility: hidden;
 }
