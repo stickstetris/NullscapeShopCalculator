@@ -56,18 +56,15 @@ function canAffordUpgrade(upgrade, settings) {
 function showTooltip(upgrade) {
   const settings = getCurrentSettings();
   const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
-  const partyPlus = settings.playerCount > 8;
 
   tooltip.innerHTML = `
     <h3>${upgrade.name}</h3>
-    <p><strong>Base cost:</strong> ${upgrade.cost}</p>
-    <p><strong>Adjusted cost:</strong> ${adjustedCost}</p>
+    <p><strong>Cost:</strong> ${adjustedCost}</p>
     <p><strong>Max:</strong> ${upgrade.max}</p>
     <p><strong>Min level:</strong> ${upgrade.minLevel}</p>
-    <p><strong>Party+:</strong> ${partyPlus ? 'Yes' : 'No'}</p>
-    <p><strong>Difficulty:</strong> ${settings.difficulty}</p>
     <p>${upgrade.description}</p>
   `;
+
   tooltip.hidden = false;
   activeUpgrade = upgrade;
 }
