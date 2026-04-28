@@ -286,3 +286,11 @@ section {
   border-radius: 8px;
   padding: 8px 10px;
 }
+
+.help-mark {
+  color: #d8b4fe;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  cursor: help;
+}

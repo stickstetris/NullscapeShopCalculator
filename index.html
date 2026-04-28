@@ -26,8 +26,14 @@
         </div>
         
         <div class="field">
-          <label for="player-count">Player Count</label>
-          <input id="player-count" name="player-count" type="number" min="1" max="20" placeholder="1">
+            <label for="player-count">
+                Player Count
+                <span
+                class="help-mark"
+                title="Does not go down when players leave. A lobby with 12 players currently may have an internal player count of 14 if there were 2 players that had left."
+                >(?)</span>
+            </label>
+        <input id="player-count" name="player-count" type="number" min="1" max="20" placeholder="1">
         </div>
         
         <div class="field">
