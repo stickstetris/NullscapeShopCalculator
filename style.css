@@ -94,7 +94,8 @@
       }
     }
 
-.upgrade-card.not-yet-available {
+.upgrade-card.not-yet-available,
+.upgrade-card.missing-prerequisite {
   opacity: 0.55;
 }
 

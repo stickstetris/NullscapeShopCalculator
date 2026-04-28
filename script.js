@@ -62,6 +62,64 @@ function getOwnedCount(upgradeName) {
   return ownedUpgrades.get(upgradeName) || 0;
 }
 
+function ownsUpgrade(name, amount = 1) {
+  return getOwnedCount(name) >= amount;
+}
+
+function getPrerequisiteText(upgrade) {
+  const radarModules = [
+    'Radar Module: Altars',
+    'Radar Module: Enemies',
+    'Radar Module: Tripmines',
+    'Radar Module: Instruments',
+    'Radar Module: Players',
+  ];
+
+  if (radarModules.includes(upgrade.name)) {
+    return ownsUpgrade('Radar') ? '' : 'Requires Radar';
+  }
+
+  switch (upgrade.name) {
+    case 'Pocket Bell':
+      return ownsUpgrade('Double Jump') ? '' : 'Requires Double Jump';
+    case 'Panic Necklace':
+      return ownsUpgrade('Shield') ? '' : 'Requires Shield';
+    case 'Subspacial Barrier':
+      return ownsUpgrade('Defuse Kit', 3) ? '' : 'Requires 3 stacks of Defuse Kit';
+    default:
+      return '';
+  }
+}
+
+function isPrerequisiteMet(upgrade) {
+  return getPrerequisiteText(upgrade) === '';
+}
+
+function shouldShowUpgrade(upgrade, settings) {
+  switch (upgrade.name) {
+    case 'Adrenaline':
+      return settings.playerCount === 1 || settings.playerCount === 2;
+
+    case 'Defuse Kit':
+      return settings.difficulty !== 'Casual';
+
+    case 'Last Man Standing':
+      return settings.playerCount >= 3;
+
+    case 'Radar Module: Tripmines':
+      return settings.difficulty !== 'Casual';
+
+    case 'Radar Module: Players':
+      return settings.playerCount > 1;
+
+    case 'Subspacial Barrier':
+      return settings.difficulty !== 'Casual';
+
+    default:
+      return true;
+  }
+}
+
 function cycleOwnedCount(upgrade) {
   const currentOwned = getOwnedCount(upgrade.name);
   const nextOwned = currentOwned >= upgrade.max ? 0 : currentOwned + 1;
@@ -86,6 +144,7 @@ function showTooltip(upgrade) {
   const settings = getCurrentSettings();
   const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
   const owned = getOwnedCount(upgrade.name);
+  const prerequisiteText = getPrerequisiteText(upgrade);
 
   tooltip.innerHTML = `
     <h3>${upgrade.name}</h3>
@@ -93,6 +152,7 @@ function showTooltip(upgrade) {
     <p><strong>Owned:</strong> ${owned}/${upgrade.max}</p>
     <p><strong>Max:</strong> ${upgrade.max}</p>
     <p><strong>Min level:</strong> ${upgrade.minLevel}</p>
+    ${prerequisiteText ? `<p><strong>Requirement:</strong> ${prerequisiteText}</p>` : ''}
     <p>${upgrade.description}</p>
   `;
 
@@ -126,7 +186,7 @@ function moveTooltip(event) {
 
 function getVisibleSortedUpgrades(upgrades, settings) {
   return [...upgrades]
-    .filter((upgrade) => isUpgradeEligibleForRun(upgrade, settings))
+    .filter((upgrade) => shouldShowUpgrade(upgrade, settings))
     .sort((a, b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name));
 }
 
@@ -140,6 +200,7 @@ function renderUpgrades(upgrades) {
     const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty);
     const affordable = canAffordUpgrade(upgrade, settings);
     const availableByLevel = settings.currentLevel >= upgrade.minLevel;
+    const prerequisiteMet = isPrerequisiteMet(upgrade);
     const owned = getOwnedCount(upgrade.name);
 
     const card = document.createElement('button');
@@ -153,6 +214,10 @@ function renderUpgrades(upgrades) {
 
     if (!availableByLevel) {
       card.classList.add('not-yet-available');
+    }
+
+    if (!prerequisiteMet) {
+      card.classList.add('missing-prerequisite');
     }
 
     if (owned > 0) {
