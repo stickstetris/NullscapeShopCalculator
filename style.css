@@ -11,6 +11,18 @@ main {
   margin: 0 auto;
 }
 
+.page-header {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 20px;
+}
+
+.title-image {
+  display: block;
+  width: min(100%, 700px);
+  height: auto;
+}
+
 section {
   margin-bottom: 24px;
 }
