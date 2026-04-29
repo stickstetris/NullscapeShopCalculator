@@ -196,7 +196,7 @@
     "image": "https://static.wikitide.net/nullscapewiki/thumb/d/d5/Gift_Magnet.png/84px-Gift_Magnet.png",
     "cost": 1500,
     "costSolo": 750,
-    "stackCosts": [1500, 2100, 2700],
+    "stackCosts": [750, 1050, 1350],
     "stackCostsSolo": [750, 1050, 1350],
     "max": 3,
     "minLevel": 15
