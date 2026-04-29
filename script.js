@@ -177,6 +177,9 @@ function shouldShowUpgrade(upgrade, settings) {
     case 'Subspacial Barrier':
       return settings.difficulty !== 'Casual';
 
+    case 'Grace Wings':
+      return settings.difficulty !== 'Casual';
+
     default:
       return true;
   }
