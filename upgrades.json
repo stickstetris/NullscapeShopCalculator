@@ -186,10 +186,9 @@
     "description": "Gives the player a unique buff according to their class.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/e/e6/Ninja-Belt.png/84px-Ninja-Belt.png",
     "cost": 700,
-    "costCasual": 700,
+    "costCasual": 500,
     "max": 1,
-    "minLevel": 13,
-    "soloCostOverride": 500
+    "minLevel": 13
   },
   {
     "name": "Larger Grapple Points",
