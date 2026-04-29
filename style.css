@@ -27,7 +27,6 @@ main {
 .page-header {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
 .title-image {
@@ -109,6 +108,27 @@ section {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   cursor: help;
+}
+
+.reset-button {
+  margin-top: -8px;
+  margin-left: auto;
+  display: block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #a855f7;
+  background: transparent;
+  color: #f5e9ff;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background: rgb(168 85 247 / 0.15);
+}
+
+.reset-button:active {
+  background: rgb(168 85 247 / 0.25);
 }
 
 /* Nothing? curse control */

@@ -1,5 +1,6 @@
 const upgradeGrid = document.getElementById('upgrade-grid');
 const tooltip = document.getElementById('upgrade-tooltip');
+const resetButton = document.getElementById('reset-all');
 
 const currentMoneyInput = document.getElementById('current-money');
 const currentLevelInput = document.getElementById('current-level');
@@ -66,6 +67,26 @@ function loadState() {
     console.warn('Could not load state:', error);
   }
 }
+
+resetButton.addEventListener('click', () => {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {
+    console.warn('Could not clear saved state:', error);
+  }
+
+  currentLevelInput.value = '';
+  playerCountInput.value = '';
+  difficultySelect.value = 'Standard';
+  currentMoneyInput.value = '';
+  nothingCurseInput.checked = false;
+
+  ownedUpgrades.clear();
+  selectedShopItems.clear();
+
+  refreshUI();
+  saveState();
+});
 
 async function loadUpgrades() {
   try {
