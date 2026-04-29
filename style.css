@@ -378,3 +378,9 @@ section {
 .page-credit a:hover {
   color: #f5d0fe;
 }
+
+.footer-note {
+  margin: 10px 0 0;
+  color: #e9d5ff;
+  font-size: 0.75rem;
+}
