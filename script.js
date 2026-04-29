@@ -57,7 +57,7 @@ function loadState() {
     currentMoneyInput.value = state.currentMoney ?? '';
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
-    partySizeSelect.value = state.partySize ?? 'party';
+    partySizeSelect.value = state.partySize ?? 'solo';
     playerCountInput.value = state.playerCount ?? '';
     nothingCurseInput.checked = Boolean(state.nothingCurse);
 
@@ -86,7 +86,7 @@ resetButton.addEventListener('click', () => {
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
   currentMoneyInput.value = '';
-  partySizeSelect.value = 'party';
+  partySizeSelect.value = 'solo';
   nothingCurseInput.checked = false;
 
   ownedUpgrades.clear();
@@ -106,6 +106,7 @@ async function loadUpgrades() {
 
     allUpgrades = await response.json();
     loadState();
+    syncPartySizeWithPlayerCount();
     refreshUI();
   } catch (error) {
     console.error('Failed to load upgrades:', error);
@@ -360,6 +361,20 @@ function canSelectShopItem(upgrade, settings) {
   );
 
   return remainingMoney >= cost;
+}
+
+function syncPartySizeWithPlayerCount() {
+  const playerCount = Math.max(1, Number(playerCountInput.value) || 1);
+  const currentPartySize = partySizeSelect.value;
+
+  if (playerCount > 8 && currentPartySize === 'party') {
+    partySizeSelect.value = 'party-plus';
+    return;
+  }
+
+  if (playerCount > 1 && currentPartySize === 'solo') {
+    partySizeSelect.value = 'party';
+  }
 }
 
 function toggleShopItem(upgrade) {
@@ -636,11 +651,17 @@ function refreshUI() {
   console.log([...selectedShopItems]);
 }
 
-[currentMoneyInput, currentLevelInput, playerCountInput, nothingCurseInput].forEach((input) => {
+[currentMoneyInput, currentLevelInput, nothingCurseInput].forEach((input) => {
   input.addEventListener('input', () => {
     refreshUI();
     saveState();
   });
+});
+
+playerCountInput.addEventListener('input', () => {
+  syncPartySizeWithPlayerCount();
+  refreshUI();
+  saveState();
 });
 
 [ difficultySelect, partySizeSelect ].forEach((select) => {
