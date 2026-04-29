@@ -115,8 +115,25 @@ function getCurrentSettings() {
   };
 }
 
-function getAdjustedCost(basePrice, playerCount, difficulty, nothingCurse = false) {
-  let price = basePrice * Math.sqrt(playerCount);
+function getBaseUpgradeCost(upgrade, playerCount) {
+  const owned = getOwnedCount(upgrade.name);
+  const useSoloPricing = playerCount <= 2;
+
+  const stackCosts = useSoloPricing
+    ? (upgrade.stackCostsSolo ?? upgrade.stackCosts)
+    : upgrade.stackCosts;
+
+  if (Array.isArray(stackCosts) && owned < stackCosts.length) {
+    return stackCosts[owned];
+  }
+
+  return useSoloPricing
+    ? (upgrade.costSolo ?? upgrade.cost)
+    : upgrade.cost;
+}
+
+function getAdjustedCost(upgrade, playerCount, difficulty, nothingCurse = false) {
+  let price = getBaseUpgradeCost(upgrade, playerCount) * Math.sqrt(playerCount);
 
   if (playerCount > 8) {
     price /= 1.125;
@@ -133,7 +150,13 @@ function getAdjustedCost(basePrice, playerCount, difficulty, nothingCurse = fals
   return Math.ceil(price);
 }
 function canAffordUpgrade(upgrade, settings) {
-  const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty, settings.nothingCurse);
+  const adjustedCost = getAdjustedCost(
+    upgrade,
+    settings.playerCount,
+    settings.difficulty,
+    settings.nothingCurse
+  );
+
   return settings.currentMoney >= adjustedCost && settings.currentLevel >= upgrade.minLevel;
 }
 
@@ -142,7 +165,7 @@ function isUpgradeEligibleForRun(upgrade, settings) {
 }
 
 function getOwnedCount(upgradeName) {
-  return ownedUpgrades.get(upgradeName) || 0;
+  return ownedUpgrades.get(upgradeName) ?? 0;
 }
 
 function ownsUpgrade(name, amount = 1) {
@@ -252,7 +275,12 @@ function getSelectedShopCost(settings) {
     const upgrade = allUpgrades.find((item) => item.name === upgradeName);
 
     if (upgrade) {
-      total += getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty, settings.nothingCurse);
+      total += getAdjustedCost(
+        upgrade,
+        settings.playerCount,
+        settings.difficulty,
+        settings.nothingCurse
+      );
     }
   });
 
@@ -272,7 +300,12 @@ function canSelectShopItem(upgrade, settings) {
   }
 
   const remainingMoney = getRemainingMoney(settings);
-  const cost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty, settings.nothingCurse);
+  const cost = getAdjustedCost(
+    upgrade,
+    settings.playerCount,
+    settings.difficulty,
+    settings.nothingCurse
+  );
 
   return remainingMoney >= cost;
 }
@@ -299,12 +332,19 @@ function pruneInvalidShopSelections(settings) {
 
 function showTooltip(upgrade) {
   const settings = getCurrentSettings();
-  const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty, settings.nothingCurse);
+  const baseCost = getBaseUpgradeCost(upgrade, settings.playerCount);
+  const adjustedCost = getAdjustedCost(
+    upgrade,
+    settings.playerCount,
+    settings.difficulty,
+    settings.nothingCurse
+  );
   const owned = getOwnedCount(upgrade.name);
   const prerequisiteText = getPrerequisiteText(upgrade);
 
   tooltip.innerHTML = `
     <h3>${upgrade.name}</h3>
+    <p><strong>Base cost:</strong> ${baseCost}</p>
     <p><strong>Cost:</strong> ${adjustedCost}</p>
     <p><strong>Owned:</strong> ${owned}/${upgrade.max}</p>
     <p><strong>Max:</strong> ${upgrade.max}</p>
@@ -354,7 +394,12 @@ function renderUpgrades(upgrades) {
   upgradeGrid.innerHTML = '';
 
   visibleUpgrades.forEach((upgrade) => {
-    const adjustedCost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty, settings.nothingCurse);
+    const adjustedCost = getAdjustedCost(
+      upgrade,
+      settings.playerCount,
+      settings.difficulty,
+      settings.nothingCurse
+    );
     const affordable = canAffordUpgrade(upgrade, settings);
     const availableByLevel = settings.currentLevel >= upgrade.minLevel;
     const prerequisiteMet = isPrerequisiteMet(upgrade);
@@ -363,7 +408,10 @@ function renderUpgrades(upgrades) {
     const card = document.createElement('button');
     card.type = 'button';
     card.className = 'upgrade-card';
-    card.setAttribute('aria-label', `${upgrade.name}, cost ${adjustedCost}, owned ${owned} of ${upgrade.max}`);
+    card.setAttribute(
+      'aria-label',
+      `${upgrade.name}, cost ${adjustedCost}, owned ${owned} of ${upgrade.max}`
+    );
 
     if (!affordable) {
       card.classList.add('locked');
@@ -400,10 +448,10 @@ function renderUpgrades(upgrades) {
     card.appendChild(cost);
 
     if (owned > 0 && upgrade.max > 1) {
-        const ownedBadge = document.createElement('span');
-        ownedBadge.className = 'upgrade-owned';
-        ownedBadge.textContent = `${owned}/${upgrade.max}`;
-        card.appendChild(ownedBadge);
+      const ownedBadge = document.createElement('span');
+      ownedBadge.className = 'upgrade-owned';
+      ownedBadge.textContent = `${owned}/${upgrade.max}`;
+      card.appendChild(ownedBadge);
     }
 
     card.addEventListener('mouseenter', () => {
@@ -414,9 +462,9 @@ function renderUpgrades(upgrades) {
     card.addEventListener('mouseleave', hideTooltip);
 
     card.addEventListener('click', () => {
-        cycleOwnedCount(upgrade);
-        refreshUI();
-        saveState();
+      cycleOwnedCount(upgrade);
+      refreshUI();
+      saveState();
     });
 
     upgradeGrid.appendChild(card);
@@ -433,7 +481,12 @@ function renderShop(upgrades) {
   shopGrid.innerHTML = '';
 
   shopItems.forEach((upgrade) => {
-    const cost = getAdjustedCost(upgrade.cost, settings.playerCount, settings.difficulty, settings.nothingCurse);
+    const cost = getAdjustedCost(
+      upgrade,
+      settings.playerCount,
+      settings.difficulty,
+      settings.nothingCurse
+    );
     const itemKey = getShopItemKey(upgrade);
     const selected = selectedShopItems.has(itemKey);
     const affordableNow = canSelectShopItem(upgrade, settings);

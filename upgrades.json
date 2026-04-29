@@ -4,6 +4,9 @@
     "description": "﹢25% Golden Gift yield.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/9/9f/Business-License.png/84px-Business-License.png",
     "cost": 75,
+    "costSolo": 75,
+    "stackCosts": [75, 187.5],
+    "stackCostsSolo": [75, 187.5],
     "max": 2,
     "minLevel": 3
   },
@@ -12,6 +15,7 @@
     "description": "Gain ﹢40 (﹢10 per beaconed player) Golden Gifts every round if half or more of the players survive.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/87/PaycheckP4.png/84px-PaycheckP4.png",
     "cost": 55,
+    "costSolo": 55,
     "max": 5,
     "minLevel": 3
   },
@@ -20,6 +24,7 @@
     "description": "﹢10% Movement speed (Max 30%).",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/2/29/Swiftness-Rings.png/84px-Swiftness-Rings.png",
     "cost": 80,
+    "costSolo": 80,
     "max": 3,
     "minLevel": 3
   },
@@ -28,6 +33,7 @@
     "description": "Arrow always appears and highlights all nearby gifts.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/4/46/Radar.png/84px-Radar.png",
     "cost": 175,
+    "costSolo": 175,
     "max": 1,
     "minLevel": 5
   },
@@ -36,6 +42,7 @@
     "description": "More Jump Pads with less random positions.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/2/26/Better-Jump-Pads.png/84px-Better-Jump-Pads.png",
     "cost": 50,
+    "costSolo": 50,
     "max": 1,
     "minLevel": 5
   },
@@ -44,6 +51,7 @@
     "description": "Allows you to double jump.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/e/ea/Double-Jump.png/84px-Double-Jump.png",
     "cost": 150,
+    "costSolo": 150,
     "max": 1,
     "minLevel": 5
   },
@@ -52,6 +60,7 @@
     "description": "Makes Orbs appear around the map, Orbs boost you after jumping out of them.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/5/53/Tria_Orbs.png/84px-Tria_Orbs.png",
     "cost": 100,
+    "costSolo": 100,
     "max": 1,
     "minLevel": 5
   },
@@ -60,6 +69,7 @@
     "description": "If the level is odd, on collapse, the Medal spawns, bring it to the beacon for Golden Gifts and if the next level is an intermission, get the option to pick a difficult curse for Golden Gifts. Carrying it gives an extra double jump but disables abilities.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/b/b6/Medal_Icon.png/84px-Medal_Icon.png",
     "cost": 100,
+    "costSolo": 100,
     "max": 1,
     "minLevel": 5
   },
@@ -68,6 +78,7 @@
     "description": "Greatly enhances air control.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/4/4b/Grace-Wings.png/84px-Grace-Wings.png",
     "cost": 300,
+    "costSolo": 300,
     "max": 1,
     "minLevel": 5
   },
@@ -76,6 +87,7 @@
     "description": "Harder to reach Jump Pads that are smaller, with a more powerful boost.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/84/Grapple-Points.png/84px-Grapple-Points.png",
     "cost": 100,
+    "costSolo": 100,
     "max": 1,
     "minLevel": 5
   },
@@ -84,6 +96,7 @@
     "description": "An extra double jump.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/1/13/Pocket_Bell.png/84px-Pocket_Bell.png",
     "cost": 300,
+    "costSolo": 300,
     "max": 1,
     "minLevel": 8
   },
@@ -92,6 +105,7 @@
     "description": "Tracks enemies through walls.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/0/0e/Radar_Module_Enemies.png/84px-Radar_Module_Enemies.png",
     "cost": 200,
+    "costSolo": 200,
     "max": 1,
     "minLevel": 8
   },
@@ -100,6 +114,7 @@
     "description": "Marks the location of all unused altars every 12 seconds.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/7/7d/Radar_Module_Altars.png/84px-Radar_Module_Altars.png",
     "cost": 300,
+    "costSolo": 300,
     "max": 1,
     "minLevel": 8
   },
@@ -108,6 +123,7 @@
     "description": "25% Increased maximum jump height. Controllable jump height. Hold space to jump higher, tap space to jump lightly.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/c/c4/AGC.png/84px-AGC.png",
     "cost": 600,
+    "costSolo": 600,
     "max": 1,
     "minLevel": 8
   },
@@ -116,6 +132,7 @@
     "description": "Less slipping on ice. Going in one direction for a while slowly gives a speed boost.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/0/0a/Ice-Skates.png/84px-Ice-Skates.png",
     "cost": 400,
+    "costSolo": 300,
     "max": 1,
     "minLevel": 8
   },
@@ -124,6 +141,7 @@
     "description": "During collapse, some tiles turn yellow. Collecting all gifts from these tiles gives bonus Golden Gifts.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/87/Fanny_Pack.png/84px-Fanny_Pack.png",
     "cost": 300,
+    "costSolo": 300,
     "max": 1,
     "minLevel": 8
   },
@@ -132,6 +150,7 @@
     "description": "Bonking sends you upwards and allows full control.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/3/37/Helmet.png/84px-Helmet.png",
     "cost": 400,
+    "costSolo": 400,
     "max": 1,
     "minLevel": 8
   },
@@ -140,6 +159,7 @@
     "description": "Spawns an extra altar.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/4/4c/More-Altars.png/84px-More-Altars.png",
     "cost": 600,
+    "costSolo": 600,
     "max": 1,
     "minLevel": 10
   },
@@ -148,6 +168,7 @@
     "description": "Gives the player a unique buff according to their class.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/e/e6/Ninja-Belt.png/84px-Ninja-Belt.png",
     "cost": 700,
+    "costSolo": 500,
     "max": 1,
     "minLevel": 13
   },
@@ -156,6 +177,7 @@
     "description": "Grapple Points are 25% larger.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/3/3a/LargerGrapplePoints.png/84px-LargerGrapplePoints.png",
     "cost": 500,
+    "costSolo": 500,
     "max": 1,
     "minLevel": 13
   },
@@ -164,6 +186,7 @@
     "description": "Gives the player a unique buff according to their class.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/f/ff/Shark_Tail.png/84px-Shark_Tail.png",
     "cost": 1200,
+    "costSolo": 800,
     "max": 1,
     "minLevel": 15
   },
@@ -172,6 +195,9 @@
     "description": "Increases pickup range by .5 studs. (Max 1.5 studs)",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/d/d5/Gift_Magnet.png/84px-Gift_Magnet.png",
     "cost": 1500,
+    "costSolo": 750,
+    "stackCosts": [1500, 2100, 2700],
+    "stackCostsSolo": [750, 1050, 1350],
     "max": 3,
     "minLevel": 15
   },
@@ -180,6 +206,7 @@
     "description": "Instant Acceleration. Completely Removes the slippery/icey movement.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/b/bc/Matrix-TetrahedronP4.png/84px-Matrix-TetrahedronP4.png",
     "cost": 2500,
+    "costSolo": 1500,
     "max": 1,
     "minLevel": 15
   },
@@ -188,6 +215,7 @@
     "description": "﹢40% Movement speed.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/2/26/Sports-Shoes.png/84px-Sports-Shoes.png",
     "cost": 1350,
+    "costSolo": 1000,
     "max": 1,
     "minLevel": 15
   },
@@ -196,6 +224,7 @@
     "description": "Allows you to take an extra hit. Doesn't protect you from the Void.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/d/d0/ShieldP4.png/84px-ShieldP4.png",
     "cost": 4000,
+    "costSolo": 1000,
     "max": 1,
     "minLevel": 15
   },
@@ -204,6 +233,7 @@
     "description": "Marks the location of Cadence's instruments every 12 seconds and gives you an arrow pointing towards instruments.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/a/a1/Radar_Module_Instruments.png/84px-Radar_Module_Instruments.png",
     "cost": 1000,
+    "costSolo": 1000,
     "max": 1,
     "minLevel": 15
   },
@@ -212,6 +242,7 @@
     "description": "When your last shield breaks, gain debuff immunity, movement speed and ﹢2 pickup range for 40 seconds.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/1/1f/PanicNecklace.png/84px-PanicNecklace.png",
     "cost": 3000,
+    "costSolo": 1500,
     "max": 1,
     "minLevel": 18
   },
@@ -220,6 +251,7 @@
     "description": "Gives the player a unique buff according to their class.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/1/18/Miniature-Hourglass.png/84px-Miniature-Hourglass.png",
     "cost": 3000,
+    "costSolo": 1500,
     "max": 1,
     "minLevel": 20
   },
@@ -228,6 +260,7 @@
     "description": "Collecting gifts has a ﹢1% chance to collect nearby gifts.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/81/GiftIdol.png/84px-GiftIdol.png",
     "cost": 4000,
+    "costSolo": 2000,
     "max": 5,
     "minLevel": 20
   },
@@ -236,6 +269,7 @@
     "description": "Altar of Protection also gives a one time Void shield that teleports you out of the Void.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/7/7c/DrownedAegis.png/84px-DrownedAegis.png",
     "cost": 6000,
+    "costSolo": 3000,
     "max": 1,
     "minLevel": 20
   },
@@ -244,6 +278,7 @@
     "description": "﹢20% Movement speed.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/5/54/Adrenaline-Solo2.png/84px-Adrenaline-Solo2.png",
     "cost": 50,
+    "costSolo": 50,
     "max": 1,
     "minLevel": 3
   },
@@ -252,6 +287,7 @@
     "description": "﹢20% Chance for Tripmines to not explode. (Max 60%)",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/c/c4/Defuse-Kit.png/84px-Defuse-Kit.png",
     "cost": 30,
+    "costSolo": 30,
     "max": 3,
     "minLevel": 5
   },
@@ -260,6 +296,7 @@
     "description": "Gain a movement speed boost, 4 seconds of invincibility, and a shield when you are the last one alive.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/1/1c/Last-Man-Standing.png/84px-Last-Man-Standing.png",
     "cost": 200,
+    "costSolo": 200,
     "max": 1,
     "minLevel": 5
   },
@@ -268,6 +305,7 @@
     "description": "Highlights all nearby Tripmines.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/1/1f/Radar_Module_Tripmines.png/84px-Radar_Module_Tripmines.png",
     "cost": 400,
+    "costSolo": 400,
     "max": 1,
     "minLevel": 8
   },
@@ -276,6 +314,7 @@
     "description": "Highlights other players every 12 seconds.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/e/e4/Radar_Module_Players.png/84px-Radar_Module_Players.png",
     "cost": 150,
+    "costSolo": 150,
     "max": 1,
     "minLevel": 8
   },
@@ -284,6 +323,7 @@
     "description": "Allows you take an extra hit from Tripmines and Void Implosions.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/3/33/Subspacial_Barrier.png/84px-Subspacial_Barrier.png",
     "cost": 1000,
+    "costSolo": 1000,
     "max": 2,
     "minLevel": 10
   }
