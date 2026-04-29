@@ -51,6 +51,21 @@
           </div>
 
           <div class="field">
+            <label for="party-size">
+              Party Size
+              <span
+                class="help-mark"
+                title="Solo lobbies get specific discounts on items like Shield and Ice Skates. Party+ gets a universal ~11.11% discount."
+              >(?)</span>
+            </label>
+            <select id="party-size" name="party-size">
+              <option value="solo">Solo</option>
+              <option value="party" selected>Party</option>
+              <option value="party-plus">Party+</option>
+            </select>
+          </div>
+
+          <div class="field">
             <label for="difficulty">Difficulty</label>
             <select id="difficulty" name="difficulty">
               <option>Casual</option>

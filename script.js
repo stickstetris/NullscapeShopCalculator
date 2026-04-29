@@ -6,6 +6,7 @@ const currentMoneyInput = document.getElementById('current-money');
 const currentLevelInput = document.getElementById('current-level');
 const difficultySelect = document.getElementById('difficulty');
 const playerCountInput = document.getElementById('player-count');
+const partySizeSelect = document.getElementById('party-size');
 const nothingCurseInput = document.getElementById('nothing-curse');
 
 const shopGrid = document.getElementById('shop-grid');
@@ -27,6 +28,7 @@ function saveState() {
     currentLevel: settings.currentLevel,
     difficulty: settings.difficulty,
     playerCount: settings.playerCount,
+    partySize: settings.partySize,
     nothingCurse: settings.nothingCurse,
     ownedUpgrades: Array.from(ownedUpgrades.entries()),
   };
@@ -51,6 +53,7 @@ function loadState() {
     currentMoneyInput.value = state.currentMoney ?? '';
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
+    partySizeSelect.value = state.partySize ?? 'party';
     playerCountInput.value = state.playerCount ?? '';
     nothingCurseInput.checked = Boolean(state.nothingCurse);
 
@@ -79,6 +82,7 @@ resetButton.addEventListener('click', () => {
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
   currentMoneyInput.value = '';
+  partySizeSelect.value = 'party';
   nothingCurseInput.checked = false;
 
   ownedUpgrades.clear();
@@ -111,6 +115,7 @@ function getCurrentSettings() {
     currentLevel: Number(currentLevelInput.value) || 1,
     difficulty: difficultySelect.value,
     playerCount: Math.max(1, Number(playerCountInput.value) || 1),
+    partySize: partySizeSelect.value,
     nothingCurse: nothingCurseInput.checked,
   };
 }
@@ -138,8 +143,8 @@ function getBaseUpgradeCost(upgrade, difficulty) {
     : upgrade.cost;
 }
 
-function applySoloPricing(price, upgrade, playerCount) {
-  if (playerCount !== 1) {
+function applySoloPricing(price, upgrade, partySize) {
+  if (partySize !== 'solo') {
     return price;
   }
 
@@ -151,13 +156,13 @@ function applySoloPricing(price, upgrade, playerCount) {
   return price * (1 - soloDiscount / 100);
 }
 
-function getAdjustedCost(upgrade, playerCount, difficulty, nothingCurse = false) {
+function getAdjustedCost(upgrade, playerCount, difficulty, partySize, nothingCurse = false) {
   let price = getBaseUpgradeCost(upgrade, difficulty);
 
-  price = applySoloPricing(price, upgrade, playerCount);
+  price = applySoloPricing(price, upgrade, partySize);
   price *= Math.sqrt(playerCount);
 
-  if (playerCount > 8) {
+  if (partySize === 'party-plus') {
     price /= 1.125;
   }
 
@@ -174,12 +179,12 @@ function getAdjustedCost(upgrade, playerCount, difficulty, nothingCurse = false)
 
 function canAffordUpgrade(upgrade, settings) {
   const adjustedCost = getAdjustedCost(
-    upgrade,
-    settings.playerCount,
-    settings.difficulty,
-    settings.nothingCurse
-  );
-
+  upgrade,
+  settings.playerCount,
+  settings.difficulty,
+  settings.partySize,
+  settings.nothingCurse
+);
   return settings.currentMoney >= adjustedCost && settings.currentLevel >= upgrade.minLevel;
 }
 
@@ -302,8 +307,9 @@ function getSelectedShopCost(settings) {
         upgrade,
         settings.playerCount,
         settings.difficulty,
+        settings.partySize,
         settings.nothingCurse
-      );
+      )
     }
   });
 
@@ -327,6 +333,7 @@ function canSelectShopItem(upgrade, settings) {
     upgrade,
     settings.playerCount,
     settings.difficulty,
+    settings.partySize,
     settings.nothingCurse
   );
 
@@ -360,6 +367,7 @@ function showTooltip(upgrade) {
     upgrade,
     settings.playerCount,
     settings.difficulty,
+    settings.partySize,
     settings.nothingCurse
   );
   const owned = getOwnedCount(upgrade.name);
@@ -421,6 +429,7 @@ function renderUpgrades(upgrades) {
       upgrade,
       settings.playerCount,
       settings.difficulty,
+      settings.partySize,
       settings.nothingCurse
     );
     const affordable = canAffordUpgrade(upgrade, settings);
@@ -508,6 +517,7 @@ function renderShop(upgrades) {
       upgrade,
       settings.playerCount,
       settings.difficulty,
+      settings.partySize,
       settings.nothingCurse
     );
     const itemKey = getShopItemKey(upgrade);
@@ -584,9 +594,11 @@ function refreshUI() {
   });
 });
 
-difficultySelect.addEventListener('input', () => {
-  refreshUI();
-  saveState();
+[ difficultySelect, partySizeSelect ].forEach((select) => {
+  select.addEventListener('input', () => {
+    refreshUI();
+    saveState();
+  });
 });
 
 loadUpgrades();
