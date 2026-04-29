@@ -19,13 +19,27 @@
       </header>
 
       <section aria-labelledby="controls-heading">
-        <button
-          type="button"
-          id="reset-all"
-          class="reset-button"
-        >
-          Reset
-        </button>
+      
+        <div class="top-actions">
+          <button
+            type="button"
+            id="reset-all"
+            class="reset-button"
+          >
+            Reset
+          </button>
+
+          <button
+            type="button"
+            id="open-how-to-use"
+            class="help-button"
+            aria-haspopup="dialog"
+            aria-controls="how-to-use-modal"
+            aria-expanded="false"
+          >
+            How to use
+          </button>
+        </div>
         <div class="controls">
           <div class="field">
             <label for="current-level">Current Level</label>
@@ -117,6 +131,48 @@
       </section>
 
       <div id="upgrade-tooltip" class="upgrade-tooltip" hidden></div>
+
+            <div
+        id="how-to-use-modal"
+        class="modal-backdrop"
+        hidden
+      >
+        <section
+          class="modal-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="how-to-use-title"
+        >
+          <div class="modal-header">
+            <h2 id="how-to-use-title">How to use</h2>
+            <button
+              type="button"
+              id="close-how-to-use"
+              class="modal-close"
+              aria-label="Close how to use"
+            >
+              ×
+            </button>
+          </div>
+
+          <div class="modal-content">
+            <p>
+              Enter your current level, amount of players, party size, difficulty, and amount of golden gifts
+              (and if you have the Nothing? curse that affects pricing).
+            </p>
+
+            <p>
+              On the "Owned Upgrades" page, click on all the upgrades you currently own, which will update
+              the shop section on the bottom to match your shop in game.
+            </p>
+
+            <p>
+              Click on items in the shop section to preview purchasing them, and items become red if you can
+              no longer afford them.
+            </p>
+          </div>
+        </section>
+      </div>
 
       <footer class="page-footer">
         <small>

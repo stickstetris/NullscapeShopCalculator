@@ -12,6 +12,10 @@ const nothingCurseInput = document.getElementById('nothing-curse');
 const shopGrid = document.getElementById('shop-grid');
 const shopMoney = document.getElementById('shop-money');
 
+const howToUseModal = document.getElementById('how-to-use-modal');
+const openHowToUseButton = document.getElementById('open-how-to-use');
+const closeHowToUseButton = document.getElementById('close-how-to-use');
+
 const selectedShopItems = new Set();
 
 let allUpgrades = [];
@@ -435,6 +439,33 @@ function getVisibleSortedUpgrades(upgrades, settings) {
     .filter((upgrade) => shouldShowUpgrade(upgrade, settings))
     .sort((a, b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name));
 }
+
+function openHowToUseModal() {
+  howToUseModal.hidden = false;
+  openHowToUseButton.setAttribute('aria-expanded', 'true');
+  closeHowToUseButton.focus();
+}
+
+function closeHowToUseModal() {
+  howToUseModal.hidden = true;
+  openHowToUseButton.setAttribute('aria-expanded', 'false');
+  openHowToUseButton.focus();
+}
+
+openHowToUseButton.addEventListener('click', openHowToUseModal);
+closeHowToUseButton.addEventListener('click', closeHowToUseModal);
+
+howToUseModal.addEventListener('click', (event) => {
+  if (event.target === howToUseModal) {
+    closeHowToUseModal();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !howToUseModal.hidden) {
+    closeHowToUseModal();
+  }
+});
 
 function renderUpgrades(upgrades) {
   const settings = getCurrentSettings();
