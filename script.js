@@ -115,25 +115,41 @@ function getCurrentSettings() {
   };
 }
 
-function getBaseUpgradeCost(upgrade, playerCount) {
+function getBaseUpgradeCost(upgrade, difficulty) {
   const owned = getOwnedCount(upgrade.name);
-  const useSoloPricing = playerCount <= 2;
+  const isCasual = difficulty === 'Casual';
 
-  const stackCosts = useSoloPricing
-    ? (upgrade.stackCostsSolo ?? upgrade.stackCosts)
+  const stackCosts = isCasual
+    ? (upgrade.stackCostsCasual ?? upgrade.stackCosts)
     : upgrade.stackCosts;
 
   if (Array.isArray(stackCosts) && owned < stackCosts.length) {
     return stackCosts[owned];
   }
 
-  return useSoloPricing
-    ? (upgrade.costSolo ?? upgrade.cost)
+  return isCasual
+    ? (upgrade.costCasual ?? upgrade.cost)
     : upgrade.cost;
 }
 
+function applySoloPricing(price, upgrade, playerCount) {
+  if (playerCount !== 1) {
+    return price;
+  }
+
+  if (upgrade.soloCostOverride != null) {
+    return upgrade.soloCostOverride;
+  }
+
+  const soloDiscount = upgrade.soloDiscount ?? 0;
+  return price * (1 - soloDiscount / 100);
+}
+
 function getAdjustedCost(upgrade, playerCount, difficulty, nothingCurse = false) {
-  let price = getBaseUpgradeCost(upgrade, playerCount) * Math.sqrt(playerCount);
+  let price = getBaseUpgradeCost(upgrade, difficulty);
+
+  price = applySoloPricing(price, upgrade, playerCount);
+  price *= Math.sqrt(playerCount);
 
   if (playerCount > 8) {
     price /= 1.125;
@@ -149,6 +165,7 @@ function getAdjustedCost(upgrade, playerCount, difficulty, nothingCurse = false)
 
   return Math.ceil(price);
 }
+
 function canAffordUpgrade(upgrade, settings) {
   const adjustedCost = getAdjustedCost(
     upgrade,
@@ -332,7 +349,7 @@ function pruneInvalidShopSelections(settings) {
 
 function showTooltip(upgrade) {
   const settings = getCurrentSettings();
-  const baseCost = getBaseUpgradeCost(upgrade, settings.playerCount);
+  const baseCost = getBaseUpgradeCost(upgrade, settings.playerCount, settings.difficulty);
   const adjustedCost = getAdjustedCost(
     upgrade,
     settings.playerCount,
