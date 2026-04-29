@@ -469,3 +469,25 @@ section {
 [hidden] {
   display: none !important;
 }
+
+.demo-figure {
+  margin: 8px 0 0;
+  padding: 12px;
+}
+
+.demo-gif {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(232, 217, 255, 0.2);
+  background: rgba(12, 8, 20, 0.9);
+}
+
+.demo-figure figcaption {
+  margin-top: 10px;
+  color: #d8c4f8;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
