@@ -296,7 +296,7 @@
     "description": "Altar of Protection also gives a one time Void shield that teleports you out of the Void.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/7/7c/DrownedAegis.png/84px-DrownedAegis.png",
     "cost": 6000,
-    "costCasual": 3000,
+    "costCasual": 4000,
     "max": 1,
     "minLevel": 20
 
