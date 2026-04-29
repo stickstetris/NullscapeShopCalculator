@@ -119,9 +119,15 @@ function getBaseUpgradeCost(upgrade, difficulty) {
   const owned = getOwnedCount(upgrade.name);
   const isCasual = difficulty === 'Casual';
 
-  const stackCosts = isCasual
-    ? (upgrade.stackCostsCasual ?? upgrade.stackCosts)
-    : upgrade.stackCosts;
+  let stackCosts = upgrade.stackCosts;
+
+  if (isCasual) {
+    if (Array.isArray(upgrade.stackCostsCasual)) {
+      stackCosts = upgrade.stackCostsCasual;
+    } else if (Array.isArray(upgrade.stackCosts)) {
+      stackCosts = upgrade.stackCosts.map((cost) => cost / 2);
+    }
+  }
 
   if (Array.isArray(stackCosts) && owned < stackCosts.length) {
     return stackCosts[owned];
