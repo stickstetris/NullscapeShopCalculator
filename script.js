@@ -143,8 +143,8 @@ function getBaseUpgradeCost(upgrade, difficulty) {
     : upgrade.cost;
 }
 
-function applySoloPricing(price, upgrade, partySize) {
-  if (partySize !== 'solo') {
+function applySoloPricing(price, upgrade, playerCount, partySize) {
+  if (!shouldApplySoloPricing(playerCount, partySize)) {
     return price;
   }
 
@@ -156,13 +156,31 @@ function applySoloPricing(price, upgrade, partySize) {
   return price * (1 - soloDiscount / 100);
 }
 
+function shouldApplySoloPricing(playerCount, partySize) {
+  const effectivePartySize = getEffectivePartySize(playerCount, partySize);
+  return effectivePartySize === 'solo';
+}
+
+function shouldApplyPartyPlusDiscount(playerCount, partySize) {
+  const effectivePartySize = getEffectivePartySize(playerCount, partySize);
+  return effectivePartySize === 'party-plus' && playerCount > 1;
+}
+
+function getEffectivePartySize(playerCount, partySize) {
+  if (playerCount > 8) {
+    return 'party-plus';
+  }
+
+  return partySize;
+}
+
 function getAdjustedCost(upgrade, playerCount, difficulty, partySize, nothingCurse = false) {
   let price = getBaseUpgradeCost(upgrade, difficulty);
 
-  price = applySoloPricing(price, upgrade, partySize);
+  price = applySoloPricing(price, upgrade, playerCount, partySize);
   price *= Math.sqrt(playerCount);
 
-  if (partySize === 'party-plus') {
+  if (shouldApplyPartyPlusDiscount(playerCount, partySize)) {
     price /= 1.125;
   }
 
