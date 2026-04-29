@@ -75,8 +75,8 @@ resetButton.addEventListener('click', () => {
     console.warn('Could not clear saved state:', error);
   }
 
-  currentLevelInput.value = '';
-  playerCountInput.value = '';
+  currentLevelInput.value = '3';
+  playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
   currentMoneyInput.value = '';
   nothingCurseInput.checked = false;
