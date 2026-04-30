@@ -266,6 +266,7 @@
     "description": "Collecting gifts has a ﹢1% chance to collect nearby gifts.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/81/GiftIdol.png/84px-GiftIdol.png",
     "cost": 4000,
+    "costCasual": 3000,
     "max": 5,
     "minLevel": 20
 
