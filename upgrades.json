@@ -217,6 +217,7 @@
     "cost": 1500,
     "costCasual": 750,
     "stackCosts": [1500, 2100, 2700],
+    "stackCostsCasual": [750, 1050, 1350],
     "max": 3,
     "minLevel": 15
 

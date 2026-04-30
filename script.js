@@ -135,7 +135,7 @@ function getBaseUpgradeCost(upgrade, difficulty) {
     if (Array.isArray(upgrade.stackCostsCasual)) {
       stackCosts = upgrade.stackCostsCasual;
     } else if (Array.isArray(upgrade.stackCosts)) {
-      stackCosts = upgrade.stackCosts.map((cost) => cost / 2);
+      stackCosts = upgrade.stackCosts;
     }
   }
 
