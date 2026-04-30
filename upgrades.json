@@ -6,7 +6,6 @@
     "cost": 75,
     "costCasual": 75,
     "stackCosts": [75, 187.5],
-    "stackCostsSolo": [75, 187.5],
     "max": 2,
     "minLevel": 3
 
