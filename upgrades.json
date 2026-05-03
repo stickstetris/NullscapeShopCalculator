@@ -331,6 +331,8 @@
     "description": "Allows you take an extra hit from Tripmines and Void Implosions.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/3/33/Subspacial_Barrier.png/84px-Subspacial_Barrier.png",
     "cost": 1000,
+    "soloCostOverride": [500],
+    "stackCosts": [1000, 3000],
     "max": 2,
     "minLevel": 10
 
