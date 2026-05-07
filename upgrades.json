@@ -267,6 +267,8 @@
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/81/GiftIdol.png/84px-GiftIdol.png",
     "cost": 4000,
     "costCasual": 3000,
+    "stackCosts": [4000, 8000, 12000, 16000, 20000],
+    "stackCostsCasual": [3000, 6000, 9000, 12000, 15000],
     "max": 5,
     "minLevel": 20
 
