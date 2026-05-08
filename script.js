@@ -125,17 +125,20 @@ function getCurrentSettings() {
   };
 }
 
-function getBaseUpgradeCost(upgrade, difficulty) {
+function getBaseUpgradeCost(upgrade, playerCount, difficulty, partySize) {
   const owned = getOwnedCount(upgrade.name);
   const isCasual = difficulty === 'Casual';
+  const isSolo = shouldApplySoloPricing(playerCount, partySize);
 
   let stackCosts = upgrade.stackCosts;
 
-  if (isCasual) {
+  if (isSolo && Array.isArray(upgrade.stackCostsSolo)) {
+    stackCosts = upgrade.stackCostsSolo;
+  } else if (isCasual) {
     if (Array.isArray(upgrade.stackCostsCasual)) {
       stackCosts = upgrade.stackCostsCasual;
     } else if (Array.isArray(upgrade.stackCosts)) {
-      stackCosts = upgrade.stackCosts;
+      stackCosts = upgrade.stackCosts.map((cost) => cost / 2);
     }
   }
 
@@ -143,9 +146,15 @@ function getBaseUpgradeCost(upgrade, difficulty) {
     return stackCosts[owned];
   }
 
-  return isCasual
-    ? (upgrade.costCasual ?? upgrade.cost)
-    : upgrade.cost;
+  if (isSolo && upgrade.soloCostOverride != null) {
+    return upgrade.soloCostOverride;
+  }
+
+  if (isCasual) {
+    return upgrade.costCasual ?? upgrade.cost;
+  }
+
+  return upgrade.cost;
 }
 
 function applySoloPricing(price, upgrade, playerCount, partySize) {
@@ -153,8 +162,11 @@ function applySoloPricing(price, upgrade, playerCount, partySize) {
     return price;
   }
 
-  if (upgrade.soloCostOverride != null) {
-    return upgrade.soloCostOverride;
+  const hasSoloStackOverride = Array.isArray(upgrade.stackCostsSolo);
+  const hasSoloCostOverride = upgrade.soloCostOverride != null;
+
+  if (hasSoloStackOverride || hasSoloCostOverride) {
+    return price;
   }
 
   const soloDiscount = upgrade.soloDiscount ?? 0;
@@ -180,7 +192,7 @@ function getEffectivePartySize(playerCount, partySize) {
 }
 
 function getAdjustedCost(upgrade, playerCount, difficulty, partySize, nothingCurse = false) {
-  let price = getBaseUpgradeCost(upgrade, difficulty);
+  let price = getBaseUpgradeCost(upgrade, playerCount, difficulty, partySize);
 
   price = applySoloPricing(price, upgrade, playerCount, partySize);
   price *= Math.sqrt(playerCount);
@@ -399,7 +411,12 @@ function pruneInvalidShopSelections(settings) {
 
 function showTooltip(upgrade) {
   const settings = getCurrentSettings();
-  const baseCost = getBaseUpgradeCost(upgrade, settings.playerCount, settings.difficulty);
+  const baseCost = getBaseUpgradeCost(
+    upgrade,
+    settings.playerCount,
+    settings.difficulty,
+    settings.partySize
+  );
   const adjustedCost = getAdjustedCost(
     upgrade,
     settings.playerCount,

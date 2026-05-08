@@ -4,7 +4,7 @@
     "description": "﹢25% Golden Gift yield.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/9/9f/Business-License.png/84px-Business-License.png",
     "cost": 75,
-    "stackCosts": [75, 187.5],
+    "stackCosts": [75, 187.5, 187.5],
     "max": 2,
     "minLevel": 3
 
@@ -196,8 +196,8 @@
     "description": "Increases pickup range by .5 studs. (Max 1.5 studs)",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/d/d5/Gift_Magnet.png/84px-Gift_Magnet.png",
     "cost": 1500,
-    "stackCosts": [1500, 2100, 2700],
-    "stackCostsCasual": [750, 1050, 1350],
+    "stackCosts": [1500, 2100, 2700, 2700],
+    "stackCostsCasual": [750, 1050, 1350, 1350],
     "max": 3,
     "minLevel": 15
 
@@ -267,8 +267,8 @@
     "image": "https://static.wikitide.net/nullscapewiki/thumb/8/81/GiftIdol.png/84px-GiftIdol.png",
     "cost": 4000,
     "costCasual": 3000,
-    "stackCosts": [4000, 8000, 12000, 16000, 20000],
-    "stackCostsCasual": [3000, 6000, 9000, 12000, 15000],
+    "stackCosts": [4000, 8000, 12000, 16000, 20000, 20000],
+    "stackCostsCasual": [3000, 6000, 9000, 12000, 15000, 15000],
     "max": 5,
     "minLevel": 20
 
@@ -333,8 +333,8 @@
     "description": "Allows you take an extra hit from Tripmines and Void Implosions.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/3/33/Subspacial_Barrier.png/84px-Subspacial_Barrier.png",
     "cost": 1000,
-    "soloCostOverride": [500],
-    "stackCosts": [1000, 3000],
+    "stackCostsSolo": [500, 1500, 1500],
+    "stackCosts": [1000, 3000, 3000],
     "max": 2,
     "minLevel": 10
 
