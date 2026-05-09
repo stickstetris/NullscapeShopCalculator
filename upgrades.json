@@ -78,7 +78,7 @@
     "image": "https://static.wikitide.net/nullscapewiki/thumb/4/4b/Grace-Wings.png/84px-Grace-Wings.png",
     "cost": 300,
     "max": 1,
-    "minLevel": 5,
+    "minLevel": 8,
     "soloCostOverride": 200
 
   },
