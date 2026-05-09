@@ -250,7 +250,7 @@ function getPrerequisiteText(upgrade) {
 
   switch (upgrade.name) {
     case 'Pocket Bell':
-      return ownsUpgrade('Double Jump') ? '' : 'Requires Double Jump';
+      return ownsUpgrade('Double Jump') ? '' : 'Requires Double Jump and Bell Enemy';
     case 'Panic Necklace':
       return ownsUpgrade('Shield') ? '' : 'Requires Shield';
     case 'Subspacial Barrier':
