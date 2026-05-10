@@ -267,13 +267,13 @@ function isPrerequisiteMet(upgrade) {
 function shouldShowUpgrade(upgrade, settings) {
   switch (upgrade.name) {
     case 'Adrenaline':
-      return settings.playerCount === 1 || settings.playerCount === 2;
+      return settings.partySize === 'solo' || settings.partySize === 'duo';
 
     case 'Defuse Kit':
       return settings.difficulty !== 'Casual';
 
-    case 'Last Man Standing':
-      return settings.playerCount >= 3;
+    case 'Last Robloxian Standing':
+      return settings.playerCount > 2;
 
     case 'Radar Module: Tripmines':
       return settings.difficulty !== 'Casual';
