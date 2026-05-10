@@ -302,10 +302,10 @@
 
   },
   {
-    "name": "Last Man Standing",
+    "name": "Last Robloxian Standing",
     "description": "Gain a movement speed boost, 4 seconds of invincibility, and a shield when you are the last one alive.",
     "image": "https://static.wikitide.net/nullscapewiki/thumb/1/1c/Last-Man-Standing.png/84px-Last-Man-Standing.png",
-    "cost": 200,
+    "cost": 300,
     "max": 1,
     "minLevel": 5
 
