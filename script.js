@@ -137,8 +137,6 @@ function getBaseUpgradeCost(upgrade, playerCount, difficulty, partySize) {
   } else if (isCasual) {
     if (Array.isArray(upgrade.stackCostsCasual)) {
       stackCosts = upgrade.stackCostsCasual;
-    } else if (Array.isArray(upgrade.stackCosts)) {
-      stackCosts = upgrade.stackCosts.map((cost) => cost / 2);
     }
   }
 
