@@ -344,6 +344,17 @@ section {
   font-weight: 700;
 }
 
+.shop-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+
+
 /* --------------------------------------------------
    Footer & extras
 -------------------------------------------------- */
@@ -392,6 +403,7 @@ section {
   flex-wrap: wrap;
 }
 
+.purchase-button,
 .help-button,
 .reset-button {
   padding: 10px 16px;
@@ -403,9 +415,15 @@ section {
   margin-top: -8px;
 }
 
+.purchase-button:hover,
 .help-button:hover,
 .reset-button:hover {
   background: rgba(56, 24, 88, 0.96);
+}
+
+.purchase-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .modal-backdrop {

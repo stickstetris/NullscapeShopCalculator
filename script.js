@@ -1,6 +1,7 @@
 const upgradeGrid = document.getElementById('upgrade-grid');
 const tooltip = document.getElementById('upgrade-tooltip');
 const resetButton = document.getElementById('reset-all');
+const purchaseItemsButton = document.getElementById('purchase-items');
 
 const currentMoneyInput = document.getElementById('current-money');
 const currentLevelInput = document.getElementById('current-level');
@@ -353,6 +354,53 @@ function getRemainingMoney(settings) {
   return settings.currentMoney - getSelectedShopCost(settings);
 }
 
+function getNextShopLevel(currentLevel) {
+  const validDigits = new Set([0, 3, 5, 8]);
+  let nextLevel = currentLevel + 1;
+
+  while (!validDigits.has(nextLevel % 10)) {
+    nextLevel += 1;
+  }
+
+  return nextLevel;
+}
+
+function purchaseSelectedItems() {
+  const settings = getCurrentSettings();
+
+  if (selectedShopItems.size === 0) {
+    return;
+  }
+
+  const totalCost = getSelectedShopCost(settings);
+
+  if (settings.currentMoney < totalCost) {
+    return;
+  }
+
+  selectedShopItems.forEach((upgradeName) => {
+    const upgrade = allUpgrades.find((item) => item.name === upgradeName);
+
+    if (!upgrade) {
+      return;
+    }
+
+    const currentOwned = getOwnedCount(upgrade.name);
+
+    if (currentOwned < upgrade.max) {
+      ownedUpgrades.set(upgrade.name, currentOwned + 1);
+    }
+  });
+
+  currentMoneyInput.value = Math.max(0, settings.currentMoney - totalCost);
+  currentLevelInput.value = getNextShopLevel(settings.currentLevel);
+
+  selectedShopItems.clear();
+
+  refreshUI();
+  saveState();
+}
+
 function canSelectShopItem(upgrade, settings) {
   const itemKey = getShopItemKey(upgrade);
   const alreadySelected = selectedShopItems.has(itemKey);
@@ -658,6 +706,13 @@ function refreshUI() {
   renderUpgrades(allUpgrades);
   renderShop(allUpgrades);
 
+  const selectedCost = getSelectedShopCost(settings);
+  const canPurchase =
+    selectedShopItems.size > 0 &&
+    settings.currentMoney >= selectedCost;
+
+  purchaseItemsButton.disabled = !canPurchase;
+
   if (activeUpgrade) {
     showTooltip(activeUpgrade);
   }
@@ -685,5 +740,7 @@ playerCountInput.addEventListener('input', () => {
     saveState();
   });
 });
+
+purchaseItemsButton.addEventListener('click', purchaseSelectedItems);
 
 loadUpgrades();

@@ -121,15 +121,22 @@
       </section>
 
       <section class="shop" aria-labelledby="shop-heading">
-        <h2 id="shop-heading">Shop</h2>
-        <p
-          id="shop-money"
-          class="shop-money"
-          aria-live="polite"
-          aria-atomic="true"
-        ></p>
-        <div class="shop-grid" id="shop-grid"></div>
-      </section>
+      <div class="shop-header">
+        <div>
+          <h2 id="shop-heading">Shop</h2>
+          <p id="shop-money" class="shop-money">Golden Gifts left: 0</p>
+        </div>
+
+        <button
+          type="button"
+          id="purchase-items"
+          class="purchase-button"
+        >
+          Purchase Upgrades
+        </button>
+      </div>
+      <div id="shop-grid" class="shop-grid"></div>
+    </section>
 
       <div id="upgrade-tooltip" class="upgrade-tooltip" hidden></div>
 
