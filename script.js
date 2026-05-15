@@ -55,7 +55,7 @@ function loadState() {
 
     const state = JSON.parse(raw);
 
-    currentMoneyInput.value = '';
+    currentMoneyInput.value = state.currentMoney ?? '';
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
     partySizeSelect.value = state.partySize ?? 'solo';
