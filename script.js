@@ -12,7 +12,6 @@ const nothingCurseInput = document.getElementById('nothing-curse');
 
 const shopGrid = document.getElementById('shop-grid');
 const shopMoney = document.getElementById('shop-money');
-const shopCurrentMoneyInput = document.getElementById('shop-current-money');
 
 const howToUseModal = document.getElementById('how-to-use-modal');
 const openHowToUseButton = document.getElementById('open-how-to-use');
@@ -56,8 +55,7 @@ function loadState() {
 
     const state = JSON.parse(raw);
 
-    const savedMoney = state.currentMoney ?? '';
-    setGoldenGiftInputs(savedMoney);
+    currentMoneyInput.value = '';
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
     partySizeSelect.value = state.partySize ?? 'solo';
@@ -399,7 +397,7 @@ function purchaseSelectedItems() {
     }
   });
 
-  setGoldenGiftInputs(Math.max(0, settings.currentMoney - totalCost));
+  currentMoneyInput.value = Math.max(0, settings.currentMoney - totalCost);
   currentLevelInput.value = getNextShopLevel(settings.currentLevel);
 
   selectedShopItems.clear();
@@ -733,18 +731,6 @@ function refreshUI() {
     refreshUI();
     saveState();
   });
-});
-
-currentMoneyInput.addEventListener('input', () => {
-  shopCurrentMoneyInput.value = currentMoneyInput.value;
-  refreshUI();
-  saveState();
-});
-
-shopCurrentMoneyInput.addEventListener('input', () => {
-  currentMoneyInput.value = shopCurrentMoneyInput.value;
-  refreshUI();
-  saveState();
 });
 
 playerCountInput.addEventListener('input', () => {

@@ -71,7 +71,7 @@ section {
 
 .controls {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) 30px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) 30px;
   gap: 12px;
   margin: 16px 0 24px;
   align-items: end;
