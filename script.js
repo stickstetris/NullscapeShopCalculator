@@ -436,6 +436,10 @@ function syncPartySizeWithPlayerCount() {
   }
 
   if (playerCount > 1 && currentPartySize === 'solo') {
+    partySizeSelect.value = 'duo';
+  }
+
+  if (playerCount > 2 && currentPartySize === 'duo') {
     partySizeSelect.value = 'party';
   }
 }
