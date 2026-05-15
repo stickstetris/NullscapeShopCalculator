@@ -348,9 +348,28 @@ section {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 16px;
   flex-wrap: wrap;
+}
+
+.shop-header-info {
+  display: grid;
+}
+
+.shop-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.shop-money-field {
+  width: 220px;
+}
+
+.shop-money-field input {
+  width: 100%;
 }
 
 

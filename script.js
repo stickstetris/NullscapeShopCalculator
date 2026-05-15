@@ -12,6 +12,7 @@ const nothingCurseInput = document.getElementById('nothing-curse');
 
 const shopGrid = document.getElementById('shop-grid');
 const shopMoney = document.getElementById('shop-money');
+const shopCurrentMoneyInput = document.getElementById('shop-current-money');
 
 const howToUseModal = document.getElementById('how-to-use-modal');
 const openHowToUseButton = document.getElementById('open-how-to-use');
@@ -55,7 +56,8 @@ function loadState() {
 
     const state = JSON.parse(raw);
 
-    currentMoneyInput.value = state.currentMoney ?? '';
+    const savedMoney = state.currentMoney ?? '';
+    setGoldenGiftInputs(savedMoney);
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
     partySizeSelect.value = state.partySize ?? 'solo';
@@ -86,7 +88,7 @@ resetButton.addEventListener('click', () => {
   currentLevelInput.value = '3';
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
-  currentMoneyInput.value = '';
+  setGoldenGiftInputs('');
   partySizeSelect.value = 'solo';
   nothingCurseInput.checked = false;
 
@@ -354,6 +356,11 @@ function getRemainingMoney(settings) {
   return settings.currentMoney - getSelectedShopCost(settings);
 }
 
+function setGoldenGiftInputs(value) {
+  currentMoneyInput.value = value;
+  shopCurrentMoneyInput.value = value;
+}
+
 function getNextShopLevel(currentLevel) {
   const validDigits = new Set([0, 3, 5, 8]);
   let nextLevel = currentLevel + 1;
@@ -392,7 +399,7 @@ function purchaseSelectedItems() {
     }
   });
 
-  currentMoneyInput.value = Math.max(0, settings.currentMoney - totalCost);
+  setGoldenGiftInputs(Math.max(0, settings.currentMoney - totalCost));
   currentLevelInput.value = getNextShopLevel(settings.currentLevel);
 
   selectedShopItems.clear();
@@ -726,6 +733,18 @@ function refreshUI() {
     refreshUI();
     saveState();
   });
+});
+
+currentMoneyInput.addEventListener('input', () => {
+  shopCurrentMoneyInput.value = currentMoneyInput.value;
+  refreshUI();
+  saveState();
+});
+
+shopCurrentMoneyInput.addEventListener('input', () => {
+  currentMoneyInput.value = shopCurrentMoneyInput.value;
+  refreshUI();
+  saveState();
 });
 
 playerCountInput.addEventListener('input', () => {

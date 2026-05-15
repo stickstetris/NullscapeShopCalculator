@@ -121,10 +121,21 @@
       </section>
 
       <section class="shop" aria-labelledby="shop-heading">
-      <div class="shop-header">
-        <div>
-          <h2 id="shop-heading">Shop</h2>
-          <p id="shop-money" class="shop-money">Golden Gifts left: 0</p>
+    <div class="shop-header">
+      <div class="shop-header-info">
+        <h2 id="shop-heading">Shop</h2>
+        <p id="shop-money" class="shop-money">Golden Gifts left: 0</p>
+      </div>
+
+      <div class="shop-actions">
+        <div class="field shop-money-field">
+          <label for="shop-current-money">Golden Gifts</label>
+          <input
+            id="shop-current-money"
+            name="shop-current-money"
+            type="number"
+            placeholder="0"
+          >
         </div>
 
         <button
@@ -135,8 +146,10 @@
           Purchase Upgrades
         </button>
       </div>
-      <div id="shop-grid" class="shop-grid"></div>
-    </section>
+    </div>
+
+    <div id="shop-grid" class="shop-grid"></div>
+  </section>
 
       <div id="upgrade-tooltip" class="upgrade-tooltip" hidden></div>
 
