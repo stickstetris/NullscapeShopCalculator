@@ -83,10 +83,10 @@ resetButton.addEventListener('click', () => {
     console.warn('Could not clear saved state:', error);
   }
 
+  currentMoneyInput.value = '0';
   currentLevelInput.value = '3';
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
-  setGoldenGiftInputs('');
   partySizeSelect.value = 'solo';
   nothingCurseInput.checked = false;
 
@@ -352,11 +352,6 @@ function getSelectedShopCost(settings) {
 
 function getRemainingMoney(settings) {
   return settings.currentMoney - getSelectedShopCost(settings);
-}
-
-function setGoldenGiftInputs(value) {
-  currentMoneyInput.value = value;
-  shopCurrentMoneyInput.value = value;
 }
 
 function getNextShopLevel(currentLevel) {
