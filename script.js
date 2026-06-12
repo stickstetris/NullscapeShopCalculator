@@ -83,14 +83,19 @@ resetButton.addEventListener('click', () => {
     console.warn('Could not clear saved state:', error);
   }
 
+  ownedUpgrades.clear();
+
+  if (partySizeSelect.value === 'solo' || partySizeSelect.value === 'duo') {
+  ownedUpgrades.set('Paycheck', 1);
+}
+
   currentMoneyInput.value = '0';
   currentLevelInput.value = '3';
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
-  partySizeSelect.value = 'solo';
+  //partySizeSelect.value = 'solo';
   nothingCurseInput.checked = false;
 
-  ownedUpgrades.clear();
   selectedShopItems.clear();
 
   refreshUI();
