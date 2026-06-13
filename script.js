@@ -10,6 +10,11 @@ const playerCountInput = document.getElementById('player-count');
 const partySizeSelect = document.getElementById('party-size');
 const nothingCurseInput = document.getElementById('nothing-curse');
 
+const altarShopGrid = document.getElementById('altar-shop-grid');
+const altarShopMoney = document.getElementById('altar-shop-money');
+const altarCurrentMoneyInput = document.getElementById('altar-current-money');
+const purchaseAltarsButton = document.getElementById('purchase-altars');
+
 const shopGrid = document.getElementById('shop-grid');
 const shopMoney = document.getElementById('shop-money');
 
@@ -56,6 +61,7 @@ function loadState() {
     const state = JSON.parse(raw);
 
     currentMoneyInput.value = state.currentMoney ?? '';
+    altarCurrentMoneyInput.value = state.currentMoney ?? '';
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
     partySizeSelect.value = state.partySize ?? 'solo';
@@ -90,6 +96,7 @@ resetButton.addEventListener('click', () => {
 }
 
   currentMoneyInput.value = '0';
+  altarCurrentMoneyInput.value = '0';
   currentLevelInput.value = '3';
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
@@ -468,6 +475,26 @@ function toggleShopItem(upgrade) {
   }
 }
 
+function getAltarPercent(partySize) {
+  return partySize === 'solo' ? 0.05 : 0.1;
+}
+
+function getAltarBasePrice(partySize) {
+  return partySize === 'solo' ? 12 : 50;
+}
+
+function getProtectionAltarCost(level, settings, goldenGifts) {
+  const percent = getAltarPercent(settings.partySize);
+  const basePrice = getAltarBasePrice(settings.partySize);
+  const levelMult = Math.max(1, level - 4);
+  const playerCount = Math.max(1, settings.playerCount);
+
+  return Math.ceil(
+    (goldenGifts * percent) +
+    (basePrice * levelMult * Math.sqrt(playerCount) / 1.75)
+  );
+}
+
 function pruneInvalidShopSelections(settings) {
   const validNames = new Set(getShopItems(allUpgrades, settings).map((upgrade) => upgrade.name));
 
@@ -725,12 +752,95 @@ function renderShop(upgrades) {
   });
 }
 
+function updateAltarSelectionPreview() {
+  const goldenGifts = Number(altarCurrentMoneyInput.value) || 0;
+
+  const selectedCards = Array.from(
+    altarShopGrid.querySelectorAll('.altar-card.is-selected')
+  );
+
+  const selectedTotal = selectedCards.reduce((sum, card) => {
+    return sum + (Number(card.dataset.cost) || 0);
+  }, 0);
+
+  const remainingMoney = goldenGifts - selectedTotal;
+
+  altarShopMoney.textContent = `Golden Gifts left: ${remainingMoney}`;
+  purchaseAltarsButton.disabled = selectedCards.length === 0 || selectedTotal > goldenGifts;
+}
+
+function renderAltarShop() {
+  const settings = getCurrentSettings();
+  const goldenGifts = Number(altarCurrentMoneyInput.value) || 0;
+  const startLevel = Math.max(1, settings.currentLevel);
+
+  const selectedLevels = new Set(
+    Array.from(
+      altarShopGrid.querySelectorAll('.altar-card.is-selected')
+    ).map((card) => Number(card.dataset.level))
+  );
+
+  const altarItems = Array.from({ length: 5 }, (_, offset) => {
+    const level = startLevel + offset;
+    const cost = getProtectionAltarCost(level, settings, goldenGifts);
+
+    return {
+      level,
+      cost,
+      selected: selectedLevels.has(level),
+    };
+  });
+
+  const selectedTotal = altarItems.reduce((sum, item) => {
+    return item.selected ? sum + item.cost : sum;
+  }, 0);
+
+  altarShopGrid.innerHTML = '';
+
+  altarItems.forEach((item) => {
+    const wouldTotal = item.selected ? selectedTotal : selectedTotal + item.cost;
+    const isAffordable = wouldTotal <= goldenGifts;
+
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'shop-card altar-card';
+    card.dataset.level = String(item.level);
+    card.dataset.cost = String(item.cost);
+
+    if (item.selected) {
+      card.classList.add('is-selected');
+    } else if (!isAffordable) {
+      card.classList.add('is-unaffordable');
+    }
+
+    card.innerHTML = `
+      <div class="shop-card-image">
+        <img src="https://static.wikitide.net/nullscapewiki/thumb/6/61/MoreAltars.png/84px-MoreAltars.png" alt="Protection Altar" loading="lazy">
+      </div>
+      <div class="shop-card-content">
+        <h3>Level ${item.level}</h3>
+        <strong><span>${item.cost} GG</span></strong>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      card.classList.toggle('is-selected');
+      renderAltarShop();
+    });
+
+    altarShopGrid.appendChild(card);
+  });
+
+  updateAltarSelectionPreview();
+}
+
 function refreshUI() {
   const settings = getCurrentSettings();
 
   pruneInvalidShopSelections(settings);
   renderUpgrades(allUpgrades);
   renderShop(allUpgrades);
+  renderAltarShop();
 
   const selectedCost = getSelectedShopCost(settings);
   const canPurchase =
@@ -754,8 +864,19 @@ function refreshUI() {
   });
 });
 
+currentMoneyInput.addEventListener('input', () => {
+  altarCurrentMoneyInput.value = currentMoneyInput.value;
+  renderAltarShop();
+});
+
 playerCountInput.addEventListener('input', () => {
   syncPartySizeWithPlayerCount();
+  refreshUI();
+  saveState();
+});
+
+altarCurrentMoneyInput.addEventListener('input', () => {
+  currentMoneyInput.value = altarCurrentMoneyInput.value;
   refreshUI();
   saveState();
 });
