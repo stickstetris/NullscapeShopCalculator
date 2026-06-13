@@ -71,7 +71,7 @@
     "cost": 300,
     "max": 1,
     "minLevel": 8,
-    "soloCostOverride": 200
+    "costSolo": 200
   },
   {
     "name": "Grapple Points",
@@ -120,7 +120,7 @@
     "cost": 400,
     "max": 1,
     "minLevel": 8,
-    "soloCostOverride": 300
+    "costSolo": 300
   },
   {
     "name": "Fanny Pack",
@@ -153,7 +153,7 @@
     "cost": 700,
     "max": 1,
     "minLevel": 13,
-    "soloCostOverride": 500
+    "costSolo": 500
   },
   {
     "name": "Larger Grapple Points",
@@ -208,7 +208,7 @@
     "costCasual": 2000,
     "max": 1,
     "minLevel": 15,
-    "soloCostOverride": 1000
+    "costSolo": 1000
   },
   {
     "name": "Radar Module: Instruments",

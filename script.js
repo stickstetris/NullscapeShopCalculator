@@ -135,6 +135,7 @@ function getBaseUpgradeCost(upgrade, playerCount, difficulty, partySize) {
   const owned = getOwnedCount(upgrade.name);
   const isCasual = difficulty === 'Casual';
   const isSolo = shouldApplySoloPricing(playerCount, partySize);
+  const isExtreme = difficulty === 'Extreme';
 
   let stackCosts = upgrade.stackCosts;
 
@@ -150,12 +151,16 @@ function getBaseUpgradeCost(upgrade, playerCount, difficulty, partySize) {
     return stackCosts[owned];
   }
 
-  if (isSolo && upgrade.soloCostOverride != null) {
-    return upgrade.soloCostOverride;
+  if (isSolo && upgrade.costSolo != null) {
+    return upgrade.costSolo;
   }
 
   if (isCasual) {
     return upgrade.costCasual ?? upgrade.cost;
+  }
+
+  if (isExtreme) {
+    return upgrade.costExtreme ?? upgrade.cost;
   }
 
   return upgrade.cost;
@@ -167,9 +172,9 @@ function applySoloPricing(price, upgrade, playerCount, partySize) {
   }
 
   const hasSoloStackOverride = Array.isArray(upgrade.stackCostsSolo);
-  const hasSoloCostOverride = upgrade.soloCostOverride != null;
+  const hascostSolo = upgrade.costSolo != null;
 
-  if (hasSoloStackOverride || hasSoloCostOverride) {
+  if (hasSoloStackOverride || hascostSolo) {
     return price;
   }
 
