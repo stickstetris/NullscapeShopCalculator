@@ -631,41 +631,14 @@ function renderUpgrades(upgrades) {
       card.appendChild(ownedBadge);
     }
 
-    const isHoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    let longPressTimer = null;
-    let longPressTriggered = false;
+    card.addEventListener('mouseenter', () => {
+      showTooltip(upgrade);
+    });
 
-    if (isHoverDevice) {
-      card.addEventListener('mouseenter', () => {
-        showTooltip(upgrade);
-      });
+    card.addEventListener('mousemove', moveTooltip);
+    card.addEventListener('mouseleave', hideTooltip);
 
-      card.addEventListener('mousemove', moveTooltip);
-      card.addEventListener('mouseleave', hideTooltip);
-    } else {
-      card.addEventListener('pointerdown', () => {
-        longPressTriggered = false;
-        longPressTimer = setTimeout(() => {
-          longPressTriggered = true;
-          showTooltip(upgrade);
-        }, 450);
-      });
-
-      ['pointerup', 'pointercancel', 'pointermove'].forEach((eventName) => {
-        card.addEventListener(eventName, () => {
-          clearTimeout(longPressTimer);
-        });
-      });
-    }
-
-    card.addEventListener('click', (event) => {
-      if (!isHoverDevice && longPressTriggered) {
-        event.preventDefault();
-        event.stopPropagation();
-        longPressTriggered = false;
-        return;
-      }
-
+    card.addEventListener('click', () => {
       cycleOwnedCount(upgrade);
       refreshUI();
       saveState();
