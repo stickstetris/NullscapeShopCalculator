@@ -210,6 +210,7 @@
     "image": "https://static.wikitide.net/nullscapewiki/thumb/c/cf/Shield.png/84px-Shield.png",
     "cost": 4000,
     "costCasual": 2000,
+    "costExtreme": 5000,
     "max": 1,
     "minLevel": 15,
     "costSolo": 1000
