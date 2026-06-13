@@ -205,9 +205,9 @@ function getAdjustedCost(upgrade, playerCount, difficulty, partySize, nothingCur
     price /= 1.125;
   }
 
-  if (difficulty === 'Extreme') {
-    price *= 1.15;
-  }
+  // if (difficulty === 'Extreme') {
+  //   price *= 1.15;
+  // }
 
   if (nothingCurse) {
     price *= 0.85;
