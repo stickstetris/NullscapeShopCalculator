@@ -712,9 +712,10 @@ function renderShop(upgrades) {
       const currentSettings = getCurrentSettings();
       const selectable = canSelectShopItem(upgrade, currentSettings);
 
-      if (!selected && !selectable) {
-        return;
-      }
+      // Allow debt
+      // if (!selected && !selectable) {
+      //   return;
+      // }
 
       toggleShopItem(upgrade);
       refreshUI();
