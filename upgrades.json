@@ -169,6 +169,7 @@
     "image": "https://static.wikitide.net/nullscapewiki/thumb/5/50/SharkTail.png/84px-SharkTail.png",
     "cost": 1200,
     "costCasual": 800,
+    "costExtreme": 1500,
     "max": 1,
     "minLevel": 15
   },
