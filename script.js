@@ -12,8 +12,6 @@ const nothingCurseInput = document.getElementById('nothing-curse');
 
 const altarShopGrid = document.getElementById('altar-shop-grid');
 const altarShopMoney = document.getElementById('altar-shop-money');
-const altarCurrentMoneyInput = document.getElementById('altar-current-money');
-const purchaseAltarsButton = document.getElementById('purchase-altars');
 
 const shopGrid = document.getElementById('shop-grid');
 const shopMoney = document.getElementById('shop-money');
@@ -60,8 +58,7 @@ function loadState() {
 
     const state = JSON.parse(raw);
 
-    currentMoneyInput.value = state.currentMoney ?? '';
-    altarCurrentMoneyInput.value = state.currentMoney ?? '';
+    setSharedGoldenGifts(state.currentMoney ?? 0);
     currentLevelInput.value = state.currentLevel ?? '';
     difficultySelect.value = state.difficulty ?? 'Standard';
     partySizeSelect.value = state.partySize ?? 'solo';
@@ -95,8 +92,7 @@ resetButton.addEventListener('click', () => {
   ownedUpgrades.set('Paycheck', 1);
 }
 
-  currentMoneyInput.value = '0';
-  altarCurrentMoneyInput.value = '0';
+  setSharedGoldenGifts(0);
   currentLevelInput.value = '3';
   playerCountInput.value = '1';
   difficultySelect.value = 'Standard';
@@ -418,7 +414,7 @@ function purchaseSelectedItems() {
     }
   });
 
-  currentMoneyInput.value = Math.max(0, settings.currentMoney - totalCost);
+ setSharedGoldenGifts(settings.currentMoney - totalCost);
   currentLevelInput.value = getNextShopLevel(settings.currentLevel);
 
   selectedShopItems.clear();
@@ -435,7 +431,6 @@ function canSelectShopItem(upgrade, settings) {
     return true;
   }
 
-  const remainingMoney = getRemainingMoney(settings);
   const cost = getAdjustedCost(
     upgrade,
     settings.playerCount,
@@ -443,6 +438,11 @@ function canSelectShopItem(upgrade, settings) {
     settings.partySize,
     settings.nothingCurse
   );
+
+  const remainingMoney =
+    settings.currentMoney -
+    getSelectedShopCost(settings) -
+    getSelectedAltarCost();
 
   return remainingMoney >= cost;
 }
@@ -475,6 +475,14 @@ function toggleShopItem(upgrade) {
   }
 }
 
+function getSharedGoldenGifts() {
+  return Number(currentMoneyInput.value) || 0;
+}
+
+function setSharedGoldenGifts(value) {
+  currentMoneyInput.value = String(Math.max(0, value));
+}
+
 function getAltarPercent(partySize) {
   return partySize === 'solo' ? 0.05 : 0.1;
 }
@@ -493,6 +501,24 @@ function getProtectionAltarCost(level, settings, goldenGifts) {
     (goldenGifts * percent) +
     (basePrice * levelMult * Math.sqrt(playerCount) / 1.75)
   );
+}
+
+function getSelectedAltarCost() {
+  const selectedCards = Array.from(
+    altarShopGrid.querySelectorAll('.altar-card.is-selected')
+  );
+
+  return selectedCards.reduce((sum, card) => {
+    return sum + (Number(card.dataset.cost) || 0);
+  }, 0);
+}
+
+function getCombinedSelectedCost(settings) {
+  return getSelectedShopCost(settings) + getSelectedAltarCost();
+}
+
+function getCombinedRemainingMoney(settings) {
+  return settings.currentMoney - getCombinedSelectedCost(settings);
 }
 
 function pruneInvalidShopSelections(settings) {
@@ -685,7 +711,7 @@ function renderUpgrades(upgrades) {
 function renderShop(upgrades) {
   const settings = getCurrentSettings();
   const shopItems = getShopItems(upgrades, settings);
-  const remainingMoney = getRemainingMoney(settings);
+  const remainingMoney = getCombinedRemainingMoney(settings);
 
   shopMoney.textContent = `Golden Gifts left: ${remainingMoney}`;
 
@@ -753,25 +779,15 @@ function renderShop(upgrades) {
 }
 
 function updateAltarSelectionPreview() {
-  const goldenGifts = Number(altarCurrentMoneyInput.value) || 0;
-
-  const selectedCards = Array.from(
-    altarShopGrid.querySelectorAll('.altar-card.is-selected')
-  );
-
-  const selectedTotal = selectedCards.reduce((sum, card) => {
-    return sum + (Number(card.dataset.cost) || 0);
-  }, 0);
-
-  const remainingMoney = goldenGifts - selectedTotal;
+  const settings = getCurrentSettings();
+  const remainingMoney = getCombinedRemainingMoney(settings);
 
   altarShopMoney.textContent = `Golden Gifts left: ${remainingMoney}`;
-  purchaseAltarsButton.disabled = selectedCards.length === 0 || selectedTotal > goldenGifts;
 }
 
 function renderAltarShop() {
   const settings = getCurrentSettings();
-  const goldenGifts = Number(altarCurrentMoneyInput.value) || 0;
+  const goldenGifts = Number(currentMoneyInput.value) || 0;
   const startLevel = Math.max(1, settings.currentLevel);
 
   const selectedLevels = new Set(
@@ -791,15 +807,17 @@ function renderAltarShop() {
     };
   });
 
-  const selectedTotal = altarItems.reduce((sum, item) => {
-    return item.selected ? sum + item.cost : sum;
+  const selectedAltarTotal = altarItems.reduce((sum, item) => {
+  return item.selected ? sum + item.cost : sum;
   }, 0);
+  const selectedShopTotal = getSelectedShopCost(settings);
 
   altarShopGrid.innerHTML = '';
 
   altarItems.forEach((item) => {
-    const wouldTotal = item.selected ? selectedTotal : selectedTotal + item.cost;
-    const isAffordable = wouldTotal <= goldenGifts;
+    const wouldAltarTotal = item.selected ? selectedAltarTotal : selectedAltarTotal + item.cost;
+    const wouldCombinedTotal = selectedShopTotal + wouldAltarTotal;
+    const isAffordable = wouldCombinedTotal <= goldenGifts;
 
     const card = document.createElement('button');
     card.type = 'button';
@@ -825,7 +843,7 @@ function renderAltarShop() {
 
     card.addEventListener('click', () => {
       card.classList.toggle('is-selected');
-      renderAltarShop();
+      refreshUI();
     });
 
     altarShopGrid.appendChild(card);
@@ -864,10 +882,7 @@ function refreshUI() {
   });
 });
 
-currentMoneyInput.addEventListener('input', () => {
-  altarCurrentMoneyInput.value = currentMoneyInput.value;
-  renderAltarShop();
-});
+
 
 playerCountInput.addEventListener('input', () => {
   syncPartySizeWithPlayerCount();
@@ -875,11 +890,6 @@ playerCountInput.addEventListener('input', () => {
   saveState();
 });
 
-altarCurrentMoneyInput.addEventListener('input', () => {
-  currentMoneyInput.value = altarCurrentMoneyInput.value;
-  refreshUI();
-  saveState();
-});
 
 [ difficultySelect, partySizeSelect ].forEach((select) => {
   select.addEventListener('input', () => {
