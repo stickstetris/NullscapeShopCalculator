@@ -264,6 +264,10 @@ function getPrerequisiteText(upgrade) {
       return ownsUpgrade('Shield') ? '' : 'Requires Shield';
     case 'Subspacial Barrier':
       return ownsUpgrade('Defuse Kit', 3) ? '' : 'Requires 3 stacks of Defuse Kit';
+    case 'Shark Tail':
+      return ownsUpgrade('Ninja Belt') ? '' : 'Requires Ninja Belt'
+    case 'Drowned Ægis':
+      return ownsUpgrade('More Altars') ? '' : 'Requires More Altars'
     default:
       return '';
   }
