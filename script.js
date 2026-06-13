@@ -631,16 +631,41 @@ function renderUpgrades(upgrades) {
       card.appendChild(ownedBadge);
     }
 
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const isHoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    let longPressTimer = null;
+    let longPressTriggered = false;
+
+    if (isHoverDevice) {
       card.addEventListener('mouseenter', () => {
         showTooltip(upgrade);
       });
 
       card.addEventListener('mousemove', moveTooltip);
       card.addEventListener('mouseleave', hideTooltip);
+    } else {
+      card.addEventListener('pointerdown', () => {
+        longPressTriggered = false;
+        longPressTimer = setTimeout(() => {
+          longPressTriggered = true;
+          showTooltip(upgrade);
+        }, 450);
+      });
+
+      ['pointerup', 'pointercancel', 'pointermove'].forEach((eventName) => {
+        card.addEventListener(eventName, () => {
+          clearTimeout(longPressTimer);
+        });
+      });
     }
 
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (event) => {
+      if (!isHoverDevice && longPressTriggered) {
+        event.preventDefault();
+        event.stopPropagation();
+        longPressTriggered = false;
+        return;
+      }
+
       cycleOwnedCount(upgrade);
       refreshUI();
       saveState();
