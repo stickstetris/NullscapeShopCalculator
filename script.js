@@ -636,12 +636,14 @@ function renderUpgrades(upgrades) {
       card.appendChild(ownedBadge);
     }
 
-    card.addEventListener('mouseenter', () => {
-      showTooltip(upgrade);
-    });
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      card.addEventListener('mouseenter', () => {
+        showTooltip(upgrade);
+      });
 
-    card.addEventListener('mousemove', moveTooltip);
-    card.addEventListener('mouseleave', hideTooltip);
+      card.addEventListener('mousemove', moveTooltip);
+      card.addEventListener('mouseleave', hideTooltip);
+    }
 
     card.addEventListener('click', () => {
       cycleOwnedCount(upgrade);
