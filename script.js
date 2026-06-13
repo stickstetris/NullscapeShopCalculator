@@ -146,6 +146,11 @@ function getBaseUpgradeCost(upgrade, playerCount, difficulty, partySize) {
       stackCosts = upgrade.stackCostsCasual;
     }
   }
+    else if (isExtreme) {
+      if (Array.isArray(upgrade.stackCostsExtreme)) {
+      stackCosts = upgrade.stackCostsExtreme;
+    }
+  }
 
   if (Array.isArray(stackCosts) && owned < stackCosts.length) {
     return stackCosts[owned];
