@@ -94,8 +94,8 @@ resetButton.addEventListener('click', () => {
 
   setSharedGoldenGifts(0);
   currentLevelInput.value = '3';
-  playerCountInput.value = '1';
-  difficultySelect.value = 'Standard';
+  //playerCountInput.value = '1';
+  //difficultySelect.value = 'Standard';
   //partySizeSelect.value = 'solo';
   nothingCurseInput.checked = false;
 
