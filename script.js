@@ -498,7 +498,8 @@ function canSelectShopItem(upgrade, settings) {
   const remainingMoney =
     settings.currentMoney -
     getSelectedShopCost(settings) -
-    getSelectedAltarCost();
+    getSelectedAltarCost() -
+    getSelectedPurificationCost(settings);
 
   return remainingMoney >= cost;
 }
@@ -956,12 +957,16 @@ function renderAltarShop() {
   return item.selected ? sum + item.cost : sum;
   }, 0);
   const selectedShopTotal = getSelectedShopCost(settings);
+  const selectedPurificationTotal = getSelectedPurificationCost(settings);
 
   altarShopGrid.innerHTML = '';
 
   altarItems.forEach((item) => {
     const wouldAltarTotal = item.selected ? selectedAltarTotal : selectedAltarTotal + item.cost;
-    const wouldCombinedTotal = selectedShopTotal + wouldAltarTotal;
+    const wouldCombinedTotal =
+      selectedShopTotal +
+      selectedPurificationTotal +
+      wouldAltarTotal;
     const isAffordable = wouldCombinedTotal <= goldenGifts;
 
     const card = document.createElement('button');
