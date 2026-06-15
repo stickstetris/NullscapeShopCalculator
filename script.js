@@ -999,6 +999,10 @@ function renderAltarShop() {
 
 function refreshUI() {
   const settings = getCurrentSettings();
+  const altarShopsUnlocked = settings.currentLevel >= 8;
+
+  altarShopSection.classList.toggle('shop-locked', !altarShopsUnlocked);
+  purificationShopSection.classList.toggle('shop-locked', !altarShopsUnlocked);
 
   pruneInvalidShopSelections(settings);
   renderUpgrades(allUpgrades);

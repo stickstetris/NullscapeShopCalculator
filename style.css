@@ -286,7 +286,7 @@ section {
 -------------------------------------------------- */
 
 .shop {
-  margin-top: 2rem;
+  position: relative;
 }
 
 .shop-money {
@@ -370,6 +370,47 @@ section {
 
 .shop-money-field input {
   width: 100%;
+}
+
+.shop-lock-note {
+  display: none;
+}
+
+.shop.shop-locked {
+  opacity: 0.55;
+}
+
+.shop.shop-locked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(120, 120, 120, 0.18);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.shop.shop-locked .shop-lock-note {
+  display: inline-flex;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #9ca3af;
+  background: rgba(17, 17, 17, 0.92);
+  color: #e5e7eb;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.shop.shop-locked .shop-grid,
+.shop.shop-locked .shop-header,
+.shop.shop-locked .shop-actions,
+.shop.shop-locked button,
+.shop.shop-locked input,
+.shop.shop-locked select {
+  pointer-events: none;
 }
 
 .altar-card.is-selected,
