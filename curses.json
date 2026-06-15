@@ -1,0 +1,27 @@
+[
+  {
+    "name": "LAP 2",
+    "value": 400,
+    "image": "https://static.wikitide.net/nullscapewiki/thumb/1/1f/LAP2.png/84px-LAP2.png"
+  },
+  {
+    "name": "Mart Slide",
+    "value": 330,
+    "image": "https://static.wikitide.net/nullscapewiki/thumb/3/33/MartSlide.png/84px-MartSlide.png"
+  },
+  {
+    "name": "Nothing?",
+    "value": 325,
+    "image": "https://static.wikitide.net/nullscapewiki/thumb/a/a9/Nothing%3F.png/84px-Nothing%3F.png"
+  },
+  {
+    "name": "Bloodier Meat",
+    "value": 300,
+    "image": "https://static.wikitide.net/nullscapewiki/thumb/b/b1/BloodierMeat.png/84px-BloodierMeat.png"
+  },
+  {
+    "name": "Beacon Mirage",
+    "value": 300,
+    "image": "https://static.wikitide.net/nullscapewiki/thumb/0/0a/BeaconMirage.png/84px-BeaconMirage.png"
+  }
+]

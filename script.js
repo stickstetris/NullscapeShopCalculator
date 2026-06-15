@@ -10,8 +10,13 @@ const playerCountInput = document.getElementById('player-count');
 const partySizeSelect = document.getElementById('party-size');
 const nothingCurseInput = document.getElementById('nothing-curse');
 
+const altarShopSection = document.getElementById('altar-shop-section');
 const altarShopGrid = document.getElementById('altar-shop-grid');
 const altarShopMoney = document.getElementById('altar-shop-money');
+
+const purificationShopSection = document.getElementById('purification-shop-section');
+const purificationShopGrid = document.getElementById('purification-shop-grid');
+const purificationShopMoney = document.getElementById('purification-shop-money');
 
 const shopGrid = document.getElementById('shop-grid');
 const shopMoney = document.getElementById('shop-money');
@@ -21,9 +26,11 @@ const openHowToUseButton = document.getElementById('open-how-to-use');
 const closeHowToUseButton = document.getElementById('close-how-to-use');
 
 const selectedShopItems = new Set();
+const selectedPurificationItems = new Set();
 
 let allUpgrades = [];
 let activeUpgrade = null;
+let allCurses = [];
 const ownedUpgrades = new Map();
 
 const STORAGE_KEY = 'nullscape-shop-calculator-state';
@@ -100,6 +107,7 @@ resetButton.addEventListener('click', () => {
   nothingCurseInput.checked = false;
 
   selectedShopItems.clear();
+  selectedPurificationItems.clear();
 
   refreshUI();
   saveState();
@@ -120,6 +128,22 @@ async function loadUpgrades() {
   } catch (error) {
     console.error('Failed to load upgrades:', error);
     upgradeGrid.innerHTML = '<p>Could not load upgrades.</p>';
+  }
+}
+
+async function loadCurses() {
+  try {
+    const response = await fetch('./curses.json');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+    allCurses = await response.json();
+    refreshUI();
+  } catch (error) {
+    console.error('Failed to load curses:', error);
+    purificationShopGrid.innerHTML = '<p>Could not load curses.</p>';
   }
 }
 
@@ -372,6 +396,38 @@ function getSelectedShopCost(settings) {
   return total;
 }
 
+function getPurificationItemKey(curse) {
+  return curse.name;
+}
+
+function togglePurificationItem(curse) {
+  const itemKey = getPurificationItemKey(curse);
+
+  if (selectedPurificationItems.has(itemKey)) {
+    selectedPurificationItems.delete(itemKey);
+  } else {
+    selectedPurificationItems.add(itemKey);
+  }
+}
+
+function getSelectedPurificationCost(settings) {
+  let total = 0;
+
+  selectedPurificationItems.forEach((curseName) => {
+    const curse = allCurses.find((item) => item.name === curseName);
+
+    if (curse) {
+      total += getPurificationCost(
+        curse.value ?? 0,
+        settings.currentLevel,
+        settings.playerCount
+      );
+    }
+  });
+
+  return total;
+}
+
 function getRemainingMoney(settings) {
   return settings.currentMoney - getSelectedShopCost(settings);
 }
@@ -514,11 +570,24 @@ function getSelectedAltarCost() {
 }
 
 function getCombinedSelectedCost(settings) {
-  return getSelectedShopCost(settings) + getSelectedAltarCost();
+  return (
+    getSelectedShopCost(settings) +
+    getSelectedAltarCost() +
+    getSelectedPurificationCost(settings)
+  );
 }
 
 function getCombinedRemainingMoney(settings) {
   return settings.currentMoney - getCombinedSelectedCost(settings);
+}
+
+function getPurificationLevelMult(level) {
+  return Math.min(12, Math.floor(level / 5) * 2);
+}
+
+function getPurificationCost(curseValue, level, playerCount) {
+  const levelMult = getPurificationLevelMult(level);
+  return Math.ceil(curseValue * levelMult * Math.sqrt(playerCount));
 }
 
 function pruneInvalidShopSelections(settings) {
@@ -778,6 +847,82 @@ function renderShop(upgrades) {
   });
 }
 
+function renderPurificationShop() {
+  const settings = getCurrentSettings();
+  const goldenGifts = Number(currentMoneyInput.value) || 0;
+
+  const purificationItems = allCurses.map((curse) => {
+    const cost = getPurificationCost(
+      curse.value ?? 0,
+      settings.currentLevel,
+      settings.playerCount
+    );
+
+    return {
+      name: curse.name,
+      image: curse.image,
+      cost,
+      selected: selectedPurificationItems.has(curse.name),
+    };
+  });
+
+  const selectedPurificationTotal = purificationItems.reduce((sum, item) => {
+    return item.selected ? sum + item.cost : sum;
+  }, 0);
+
+  const selectedShopTotal = getSelectedShopCost(settings);
+  const selectedAltarTotal = getSelectedAltarCost();
+
+  purificationShopMoney.textContent = `Golden Gifts left: ${getCombinedRemainingMoney(settings)}`;
+  purificationShopGrid.innerHTML = '';
+
+  purificationItems.forEach((item) => {
+    const wouldPurificationTotal = item.selected
+      ? selectedPurificationTotal
+      : selectedPurificationTotal + item.cost;
+
+    const wouldCombinedTotal =
+      selectedShopTotal + selectedAltarTotal + wouldPurificationTotal;
+
+    const isAffordable = wouldCombinedTotal <= goldenGifts;
+
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'shop-card purification-card';
+    card.dataset.name = item.name;
+    card.dataset.cost = String(item.cost);
+
+    if (item.selected) {
+      card.classList.add('is-selected');
+    } else if (!isAffordable) {
+      card.classList.add('is-unaffordable');
+    }
+
+    card.innerHTML = `
+      <div class="shop-card-image">
+        <img src="${item.image}" alt="${item.name}" loading="lazy" width="84" height="84">
+      </div>
+      <div class="shop-card-content">
+        <h3>${item.name}</h3>
+        <strong><span>${item.cost} GG</span></strong>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      const curse = allCurses.find((entry) => entry.name === item.name);
+
+      if (!curse) {
+        return;
+      }
+
+      togglePurificationItem(curse);
+      refreshUI();
+    });
+
+    purificationShopGrid.appendChild(card);
+  });
+}
+
 function updateAltarSelectionPreview() {
   const settings = getCurrentSettings();
   const remainingMoney = getCombinedRemainingMoney(settings);
@@ -858,7 +1003,9 @@ function refreshUI() {
   pruneInvalidShopSelections(settings);
   renderUpgrades(allUpgrades);
   renderShop(allUpgrades);
+
   renderAltarShop();
+  renderPurificationShop();
 
   const selectedCost = getSelectedShopCost(settings);
   const canPurchase =
@@ -870,9 +1017,6 @@ function refreshUI() {
   if (activeUpgrade) {
     showTooltip(activeUpgrade);
   }
-
-  console.log(getOwnedUpgradesArray());
-  console.log([...selectedShopItems]);
 }
 
 [currentMoneyInput, currentLevelInput, nothingCurseInput].forEach((input) => {
@@ -901,3 +1045,4 @@ playerCountInput.addEventListener('input', () => {
 purchaseItemsButton.addEventListener('click', purchaseSelectedItems);
 
 loadUpgrades();
+loadCurses();

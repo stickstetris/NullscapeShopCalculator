@@ -372,19 +372,21 @@ section {
   width: 100%;
 }
 
-.altar-card.is-selected {
+.altar-card.is-selected,
+.purification-card.is-selected {
   background: #2563eb;
   border-color: #93c5fd;
+}
+
+.altar-card.is-unaffordable,
+.purification-card.is-unaffordable {
+  background: #7f1d1d;
+  border-color: #ef4444;
 }
 
 .altar-card .shop-card-content {
   display: grid;
   gap: 4px;
-}
-
-.altar-card.is-unaffordable {
-  background: #7f1d1d;
-  border-color: #ef4444;
 }
 
 #altar-shop-grid {
@@ -408,6 +410,26 @@ section {
 
 @media (max-width: 700px) {
   #altar-shop-grid {
+    grid-template-columns: repeat(2, minmax(180px, 220px));
+  }
+}
+
+#purification-shop-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(180px, 220px));
+  justify-content: center;
+  justify-items: stretch;
+  gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  #purification-shop-grid {
+    grid-template-columns: repeat(3, minmax(180px, 220px));
+  }
+}
+
+@media (max-width: 700px) {
+  #purification-shop-grid {
     grid-template-columns: repeat(2, minmax(180px, 220px));
   }
 }

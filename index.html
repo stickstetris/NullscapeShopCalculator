@@ -152,7 +152,9 @@
     <div id="shop-grid" class="shop-grid"></div>
   </section>
 
-  <section class="shop altar-shop" aria-labelledby="altar-shop-heading">
+  <section class="shop altar-shop" id="altar-shop-section" aria-labelledby="altar-shop-heading">
+    <div class="shop-lock-note" aria-hidden="true">Available at level 8</div>
+
     <div class="shop-header">
       <div class="shop-header-info">
         <h2 id="altar-shop-heading">Protection Altars</h2>
@@ -160,8 +162,21 @@
       </div>
     </div>
 
-  <div id="altar-shop-grid" class="shop-grid"></div>
-</section>
+    <div id="altar-shop-grid" class="shop-grid"></div>
+  </section>
+
+  <section class="shop" id="purification-shop-section">
+    <div class="shop-lock-note" aria-hidden="true">Available at level 8</div>
+
+    <div class="shop-header">
+      <div class="shop-header-info">
+        <h2>Purification Costs</h2>
+        <p id="purification-shop-money" class="shop-money">Golden Gifts left: 0</p>
+      </div>
+    </div>
+
+    <div id="purification-shop-grid" class="shop-grid"></div>
+  </section>
 
       <div id="upgrade-tooltip" class="upgrade-tooltip" hidden></div>
 
