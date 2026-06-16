@@ -281,7 +281,6 @@ function getPrerequisiteText(upgrade) {
     'Radar Module: Altars',
     'Radar Module: Enemies',
     'Radar Module: Tripmines',
-    'Radar Module: Instruments',
     'Radar Module: Players',
   ];
 
@@ -300,6 +299,8 @@ function getPrerequisiteText(upgrade) {
       return ownsUpgrade('Ninja Belt') ? '' : 'Requires Ninja Belt'
     case 'Drowned Ægis':
       return ownsUpgrade('More Altars') ? '' : 'Requires More Altars'
+    case 'Radar Module: Instruments':
+      return ownsUpgrade('Radar') ? '' : 'Requires Radar and Cadence'
     default:
       return '';
   }
