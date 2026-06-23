@@ -327,9 +327,6 @@ function shouldShowUpgrade(upgrade, settings) {
     case 'Radar Module: Players':
       return settings.playerCount > 1;
 
-    case 'Subspacial Barrier':
-      return settings.difficulty !== 'Casual';
-
     case 'Grace Wings':
       return settings.difficulty !== 'Casual';
 
