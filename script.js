@@ -276,7 +276,7 @@ function ownsUpgrade(name, amount = 1) {
   return getOwnedCount(name) >= amount;
 }
 
-function getPrerequisiteText(upgrade) {
+function getPrerequisiteText(upgrade, settings) {
   const radarModules = [
     'Radar Module: Altars',
     'Radar Module: Enemies',
@@ -294,7 +294,7 @@ function getPrerequisiteText(upgrade) {
     case 'Panic Necklace':
       return ownsUpgrade('Shield') ? '' : 'Requires Shield';
     case 'Subspacial Barrier':
-      return ownsUpgrade('Defuse Kit', 3) ? '' : 'Requires 3 stacks of Defuse Kit';
+      return (ownsUpgrade('Defuse Kit', 3) || settings.difficulty === 'Casual') ? '' : 'Requires 3 stacks of Defuse Kit';
     case 'Shark Tail':
       return ownsUpgrade('Ninja Belt') ? '' : 'Requires Ninja Belt'
     case 'Drowned Ægis':
@@ -306,8 +306,8 @@ function getPrerequisiteText(upgrade) {
   }
 }
 
-function isPrerequisiteMet(upgrade) {
-  return getPrerequisiteText(upgrade) === '';
+function isPrerequisiteMet(upgrade, settings) {
+  return getPrerequisiteText(upgrade, settings) === '';
 }
 
 function shouldShowUpgrade(upgrade, settings) {
@@ -357,7 +357,7 @@ function getOwnedUpgradesArray() {
 
 function isAvailableForShop(upgrade, settings) {
   const availableByLevel = settings.currentLevel >= upgrade.minLevel;
-  const prerequisiteMet = isPrerequisiteMet(upgrade);
+  const prerequisiteMet = isPrerequisiteMet(upgrade, settings);
   const visibleForRun = shouldShowUpgrade(upgrade, settings);
   const owned = getOwnedCount(upgrade.name);
 
@@ -615,7 +615,7 @@ function showTooltip(upgrade) {
     settings.nothingCurse
   );
   const owned = getOwnedCount(upgrade.name);
-  const prerequisiteText = getPrerequisiteText(upgrade);
+  const prerequisiteText = getPrerequisiteText(upgrade, settings);
 
   tooltip.innerHTML = `
     <h3>${upgrade.name}</h3>
@@ -705,7 +705,7 @@ function renderUpgrades(upgrades) {
     );
     const affordable = canAffordUpgrade(upgrade, settings);
     const availableByLevel = settings.currentLevel >= upgrade.minLevel;
-    const prerequisiteMet = isPrerequisiteMet(upgrade);
+    const prerequisiteMet = isPrerequisiteMet(upgrade, settings);
     const owned = getOwnedCount(upgrade.name);
 
     const card = document.createElement('button');
