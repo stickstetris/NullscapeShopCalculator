@@ -311,6 +311,6 @@
     "stackCostsSolo": [500, 1500, 1500],
     "stackCosts": [1000, 3000, 3000],
     "max": 2,
-    "minLevel": 10
+    "minLevel": 15
   }
 ]
