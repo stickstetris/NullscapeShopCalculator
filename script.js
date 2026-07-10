@@ -27,6 +27,7 @@ const closeHowToUseButton = document.getElementById('close-how-to-use');
 
 const selectedShopItems = new Set();
 const selectedPurificationItems = new Set();
+const selectedAltars = new Map();
 
 let allUpgrades = [];
 let activeUpgrade = null;
@@ -108,6 +109,7 @@ resetButton.addEventListener('click', () => {
 
   selectedShopItems.clear();
   selectedPurificationItems.clear();
+  selectedAltars.clear();
 
   refreshUI();
   saveState();
@@ -564,14 +566,39 @@ function getProtectionAltarCost(level, settings, goldenGifts) {
   );
 }
 
-function getSelectedAltarCost() {
-  const selectedCards = Array.from(
-    altarShopGrid.querySelectorAll('.altar-card.is-selected')
-  );
+function getSelectedAltarLevels() {
+  return new Set(selectedAltars.keys());
+}
 
-  return selectedCards.reduce((sum, card) => {
-    return sum + (Number(card.dataset.cost) || 0);
-  }, 0);
+function getSelectedAltarCost() {
+  let total = 0;
+
+  selectedAltars.forEach((cost) => {
+    total += cost;
+  });
+
+  return total;
+}
+
+function getPreviewGoldenGiftsBeforeNextAltar(settings) {
+  return (
+    settings.currentMoney -
+    getSelectedShopCost(settings) -
+    getSelectedPurificationCost(settings) -
+    getSelectedAltarCost()
+  );
+}
+
+function toggleAltarItem(level, settings) {
+  if (selectedAltars.has(level)) {
+    selectedAltars.delete(level);
+    return;
+  }
+
+  const goldenGiftsLeft = getPreviewGoldenGiftsBeforeNextAltar(settings);
+  const frozenCost = getProtectionAltarCost(level, settings, goldenGiftsLeft);
+
+  selectedAltars.set(level, frozenCost);
 }
 
 function getCombinedSelectedCost(settings) {
@@ -937,41 +964,46 @@ function updateAltarSelectionPreview() {
 
 function renderAltarShop() {
   const settings = getCurrentSettings();
-  const goldenGifts = Number(currentMoneyInput.value) || 0;
   const startLevel = Math.max(1, settings.currentLevel);
-
-  const selectedLevels = new Set(
-    Array.from(
-      altarShopGrid.querySelectorAll('.altar-card.is-selected')
-    ).map((card) => Number(card.dataset.level))
-  );
 
   const altarItems = Array.from({ length: 5 }, (_, offset) => {
     const level = startLevel + offset;
-    const cost = getProtectionAltarCost(level, settings, goldenGifts);
+    const selected = selectedAltars.has(level);
+
+    let cost;
+
+    if (selected) {
+      cost = selectedAltars.get(level);
+    } else {
+      const goldenGiftsLeft = getPreviewGoldenGiftsBeforeNextAltar(settings);
+      cost = getProtectionAltarCost(level, settings, goldenGiftsLeft);
+    }
 
     return {
       level,
       cost,
-      selected: selectedLevels.has(level),
+      selected,
     };
   });
 
-  const selectedAltarTotal = altarItems.reduce((sum, item) => {
-  return item.selected ? sum + item.cost : sum;
-  }, 0);
   const selectedShopTotal = getSelectedShopCost(settings);
   const selectedPurificationTotal = getSelectedPurificationCost(settings);
+  const selectedAltarTotal = getSelectedAltarCost();
+  const currentMoney = settings.currentMoney;
 
   altarShopGrid.innerHTML = '';
 
   altarItems.forEach((item) => {
-    const wouldAltarTotal = item.selected ? selectedAltarTotal : selectedAltarTotal + item.cost;
+    const wouldAltarTotal = item.selected
+      ? selectedAltarTotal
+      : selectedAltarTotal + item.cost;
+
     const wouldCombinedTotal =
       selectedShopTotal +
       selectedPurificationTotal +
       wouldAltarTotal;
-    const isAffordable = wouldCombinedTotal <= goldenGifts;
+
+    const isAffordable = wouldCombinedTotal <= currentMoney;
 
     const card = document.createElement('button');
     card.type = 'button';
@@ -996,7 +1028,7 @@ function renderAltarShop() {
     `;
 
     card.addEventListener('click', () => {
-      card.classList.toggle('is-selected');
+      toggleAltarItem(item.level, getCurrentSettings());
       refreshUI();
     });
 
