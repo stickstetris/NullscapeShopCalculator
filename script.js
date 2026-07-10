@@ -261,7 +261,7 @@ function canAffordUpgrade(upgrade, settings) {
   settings.partySize,
   settings.nothingCurse
 );
-  return settings.currentMoney >= adjustedCost && settings.currentLevel >= upgrade.minLevel;
+  return settings.currentMoney >= adjustedCost && settings.currentLevel >= getEffectiveMinLevel(upgrade, settings.difficulty);
 }
 
 function isUpgradeEligibleForRun(upgrade, settings) {
@@ -356,12 +356,18 @@ function getOwnedUpgradesArray() {
 }
 
 function isAvailableForShop(upgrade, settings) {
-  const availableByLevel = settings.currentLevel >= upgrade.minLevel;
+  const availableByLevel = settings.currentLevel >= getEffectiveMinLevel(upgrade, settings.difficulty);
   const prerequisiteMet = isPrerequisiteMet(upgrade, settings);
   const visibleForRun = shouldShowUpgrade(upgrade, settings);
   const owned = getOwnedCount(upgrade.name);
 
   return visibleForRun && availableByLevel && prerequisiteMet && owned < upgrade.max;
+}
+
+function getEffectiveMinLevel(upgrade, difficulty) {
+  return (difficulty === 'Casual' && upgrade.minLevelCasual != null)
+    ? upgrade.minLevelCasual
+    : upgrade.minLevel;
 }
 
 function getShopItems(upgrades, settings) {
@@ -623,7 +629,7 @@ function showTooltip(upgrade) {
     <p><strong>Cost:</strong> ${adjustedCost}</p>
     <p><strong>Owned:</strong> ${owned}/${upgrade.max}</p>
     <p><strong>Max:</strong> ${upgrade.max}</p>
-    <p><strong>Min level:</strong> ${upgrade.minLevel}</p>
+    <p><strong>Min level:</strong> ${getEffectiveMinLevel(upgrade, settings.difficulty)}</p>
     ${prerequisiteText ? `<p><strong>Requirement:</strong> ${prerequisiteText}</p>` : ''}
     <p>${upgrade.description}</p>
   `;
@@ -704,7 +710,7 @@ function renderUpgrades(upgrades) {
       settings.nothingCurse
     );
     const affordable = canAffordUpgrade(upgrade, settings);
-    const availableByLevel = settings.currentLevel >= upgrade.minLevel;
+    const availableByLevel = settings.currentLevel >= getEffectiveMinLevel(upgrade, settings.difficulty);
     const prerequisiteMet = isPrerequisiteMet(upgrade, settings);
     const owned = getOwnedCount(upgrade.name);
 
