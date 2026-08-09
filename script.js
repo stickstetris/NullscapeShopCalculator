@@ -547,11 +547,11 @@ function setSharedGoldenGifts(value) {
 }
 
 function getAltarPercent(partySize) {
-  return partySize === 'solo' ? 0.05 : 0.1;
+  return partySize === 'solo' || partySize === 'duo' ? 0.05 : 0.1;
 }
 
 function getAltarBasePrice(partySize) {
-  return partySize === 'solo' ? 12 : 50;
+  return partySize === 'solo' || partySize === 'duo' ? 12.5 : 50;
 }
 
 function getProtectionAltarCost(level, settings, goldenGifts) {
@@ -560,9 +560,16 @@ function getProtectionAltarCost(level, settings, goldenGifts) {
   const levelMult = Math.max(1, level - 4);
   const playerCount = Math.max(1, settings.playerCount);
 
-  return Math.ceil(
+  const isSoloOrDuo =
+    settings.partySize === 'solo' || settings.partySize === 'duo';
+
+  const playerMultiplier = isSoloOrDuo
+    ? playerCount
+    : Math.sqrt(playerCount) / 1.75;
+
+  return Math.floor(
     (goldenGifts * percent) +
-    (basePrice * levelMult * Math.sqrt(playerCount) / 1.75)
+    (basePrice * levelMult * playerMultiplier)
   );
 }
 
@@ -619,7 +626,7 @@ function getPurificationLevelMult(level) {
 
 function getPurificationCost(curseValue, level, playerCount) {
   const levelMult = getPurificationLevelMult(level);
-  return Math.ceil(curseValue * levelMult * Math.sqrt(playerCount));
+  return Math.floor(curseValue * levelMult * Math.sqrt(playerCount));
 }
 
 function pruneInvalidShopSelections(settings) {
