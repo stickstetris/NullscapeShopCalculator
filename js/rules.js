@@ -17,7 +17,7 @@ const EXCLUSIVE_GROUPS = [
 ];
 
 // Upgrades that never get the Arrogance / Conceit bonus stack.
-const NO_BONUS_STACK = ['Defuse Kit'];
+const NO_BONUS_STACK = ['Defuse Kit', 'Altar Boons'];
 
 export function getMaxStacks(upgrade, settings) {
   const hasBonusStackPrice = Array.isArray(upgrade.stackCosts) && upgrade.stackCosts.length > upgrade.max;
