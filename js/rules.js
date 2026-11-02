@@ -20,8 +20,9 @@ const EXCLUSIVE_GROUPS = [
 const NO_BONUS_STACK = ['Defuse Kit'];
 
 export function getMaxStacks(upgrade, settings) {
+  const hasBonusStackPrice = Array.isArray(upgrade.stackCosts) && upgrade.stackCosts.length > upgrade.max;
   const getsBonusStack = settings.arroganceConceitDelusion &&
-    upgrade.max > 1 &&
+    (upgrade.max > 1 || hasBonusStackPrice) &&
     !NO_BONUS_STACK.includes(upgrade.name);
 
   return upgrade.max + (getsBonusStack ? 1 : 0);
