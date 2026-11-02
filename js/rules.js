@@ -70,34 +70,36 @@ export function getEnemyRequirements(upgradeName) {
 // Any text returned here hides the upgrade from the shop; put enemy-only requirements in ENEMY_REQUIREMENTS instead.
 export function getPrerequisiteText(upgrade, settings, owned) {
   if (RADAR_MODULES.includes(upgrade.name)) {
-    return ownsUpgrade(owned, 'Radar') ? '' : 'Requires Radar';
+    return ownsUpgrade(owned, 'Radar') ? '' : 'Radar';
   }
 
   switch (upgrade.name) {
     case 'Pocket Bell':
-      return ownsUpgrade(owned, 'Double Jump') ? '' : 'Requires Double Jump';
+      return ownsUpgrade(owned, 'Double Jump') ? '' : 'Double Jump';
     case 'Panic Necklace':
-      return ownsUpgrade(owned, 'Shield') ? '' : 'Requires Shield';
+      return ownsUpgrade(owned, 'Shield') ? '' : 'Shield';
     case 'Subspacial Barrier':
-      return (ownsUpgrade(owned, 'Defuse Kit', 3) || settings.difficulty === 'Casual') ? '' : 'Requires 3 stacks of Defuse Kit';
+      return (ownsUpgrade(owned, 'Defuse Kit', 3) || settings.difficulty === 'Casual') ? '' : '3 stacks of Defuse Kit';
     case 'Shark Tail':
-      return ownsUpgrade(owned, 'Ninja Belt') ? '' : 'Requires Ninja Belt';
+      return ownsUpgrade(owned, 'Ninja Belt') ? '' : 'Ninja Belt';
     case 'Miniature Hourglass':
-      return ownsUpgrade(owned, 'Ninja Belt') ? '' : 'Requires Ninja Belt';
+      return ownsUpgrade(owned, 'Ninja Belt') ? '' : 'Ninja Belt';
     case 'Drowned Ægis':
-      return ownsUpgrade(owned, 'More Altars') ? '' : 'Requires More Altars';
+      return ownsUpgrade(owned, 'More Altars') ? '' : 'More Altars';
     case 'Radar Module: Instruments':
-      return ownsUpgrade(owned, 'Radar') ? '' : 'Requires Radar';
+      return ownsUpgrade(owned, 'Radar') ? '' : 'Radar';
     case 'Aggro Magnet':
-      return ownsUpgrade(owned, 'Gift Magnet') ? '' : 'Requires Gift Magnet';
+      return ownsUpgrade(owned, 'Gift Magnet') ? '' : 'Gift Magnet';
     case 'Debuff Magnet':
-      return ownsUpgrade(owned, 'Gift Magnet') ? '' : 'Requires Gift Magnet';
+      return ownsUpgrade(owned, 'Gift Magnet') ? '' : 'Gift Magnet';
     case 'Propeller Hat':
-      return ownsUpgrade(owned, 'Helmet') ? '' : 'Requires Helmet';
+      return ownsUpgrade(owned, 'Helmet') ? '' : 'Helmet';
     case 'Altar Boons':
-      return ownsUpgrade(owned, 'Paycheck') ? '' : 'Requires Paycheck';
+      return ownsUpgrade(owned, 'Paycheck') ? '' : 'Paycheck';
     case 'Health Insurance':
-      return ownsUpgrade(owned, 'Paycheck') ? '' : 'Requires Paycheck';
+      return ownsUpgrade(owned, 'Paycheck') ? '' : 'Paycheck';
+    case 'Larger Grapple Points':
+      return ownsUpgrade(owned, 'Grapple Points') ? '' : 'Grapple Points';
     default:
       return '';
   }
