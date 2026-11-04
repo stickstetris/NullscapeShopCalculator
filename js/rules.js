@@ -127,7 +127,7 @@ export function shouldShowUpgrade(upgrade, settings) {
     case 'Miniature Hourglass':
       return settings.difficulty !== 'Casual';
     case 'Health Insurance':
-      return settings.playerCount > 2 && settings.difficulty !== 'Extreme';
+      return settings.playerCount > 3 && settings.difficulty !== 'Extreme';
     case 'Soul Tracers':
       return settings.difficulty !== 'Extreme';
     default:
