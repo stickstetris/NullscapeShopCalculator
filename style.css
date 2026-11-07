@@ -663,3 +663,9 @@ section {
   font-size: 0.95rem;
   line-height: 1.5;
 }
+
+#calc-icon {
+  width: 100px;
+  height: 100px;
+  margin: -8px;
+}
