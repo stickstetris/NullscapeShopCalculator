@@ -1,4 +1,15 @@
 /* --------------------------------------------------
+   Fonts
+-------------------------------------------------- */
+
+/* Used for Blossom's description */
+@font-face {
+  font-family: "AccanthisADFStd-Regular";
+  src: url("assets/fonts/AccanthisADFStd-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+/* --------------------------------------------------
    Global reset & base layout
 -------------------------------------------------- */
 
@@ -280,6 +291,14 @@ section {
 
 .upgrade-tooltip p {
   margin: 4px 0;
+}
+
+.upgrade-tooltip .earned-description {
+  margin: 0;
+  color: #d05e8b;
+  font-family: "AccanthisADFStd-Regular", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 1.8rem;
+  line-height: 1.2;
 }
 
 /* --------------------------------------------------

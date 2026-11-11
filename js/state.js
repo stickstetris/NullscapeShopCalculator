@@ -1,5 +1,5 @@
 // Shared app state. Modules import these objects and mutate them in place.
-import { getExclusiveRivals } from './rules.js';
+import { getExclusiveRivals, getConflictingUpgrades } from './rules.js';
 
 // Item data loaded from upgrades.json / curses.json.
 export const catalog = {
@@ -35,7 +35,7 @@ export function cycleOwnedCount(upgrade, maxStacks) {
     ownedUpgrades.delete(upgrade.name);
   } else {
     ownedUpgrades.set(upgrade.name, nextOwned);
-    getExclusiveRivals(upgrade.name).forEach((name) => ownedUpgrades.delete(name));
+    getConflictingUpgrades(upgrade.name).forEach((name) => ownedUpgrades.delete(name));
   }
 }
 

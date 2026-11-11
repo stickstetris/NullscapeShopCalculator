@@ -16,6 +16,11 @@ const EXCLUSIVE_GROUPS = [
   ['Fleeting Fate', 'Panic Necklace'],
 ];
 
+// One-way replacements: owning the key upgrade removes the listed upgrades from the run.
+const REPLACEMENTS = {
+  'Blossom': ['Transient Pennon', 'Quixotic Wing'],
+};
+
 // Upgrades that never get the Arrogance / Conceit bonus stack.
 const NO_BONUS_STACK = ['Defuse Kit', 'Altar Boons'];
 
@@ -39,8 +44,19 @@ export function getExclusiveRivals(upgradeName) {
     .filter((name) => name !== upgradeName);
 }
 
+// Upgrades that remove this one from the run when owned (Blossom for the two wing upgrades).
+export function getReplacers(upgradeName) {
+  return Object.keys(REPLACEMENTS).filter((name) => REPLACEMENTS[name].includes(upgradeName));
+}
+
+// Every upgrade that can't be owned alongside this one, in either direction.
+export function getConflictingUpgrades(upgradeName) {
+  return [...getExclusiveRivals(upgradeName), ...(REPLACEMENTS[upgradeName] ?? []), ...getReplacers(upgradeName)];
+}
+
 export function getOwnedRival(upgrade, owned) {
-  return getExclusiveRivals(upgrade.name).find((name) => ownsUpgrade(owned, name)) ?? null;
+  return [...getExclusiveRivals(upgrade.name), ...getReplacers(upgrade.name)]
+    .find((name) => ownsUpgrade(owned, name)) ?? null;
 }
 
 export function getEffectiveMinLevel(upgrade, difficulty) {
@@ -130,6 +146,8 @@ export function shouldShowUpgrade(upgrade, settings) {
       return settings.playerCount > 3 && settings.difficulty !== 'Extreme';
     case 'Soul Tracers':
       return settings.difficulty !== 'Extreme';
+    case 'Blossom':
+      return meetsLevelRequirement(upgrade, settings);
     default:
       return true;
   }
@@ -141,8 +159,10 @@ export function getVisibleSortedUpgrades(upgrades, settings) {
     .sort((a, b) => a.minLevel - b.minLevel || a.name.localeCompare(b.name));
 }
 
+// Upgrades marked "earned" in upgrades.json (Blossom) are never sold in the shop.
 function isAvailableForShop(upgrade, settings, owned) {
-  return shouldShowUpgrade(upgrade, settings) &&
+  return !upgrade.earned &&
+    shouldShowUpgrade(upgrade, settings) &&
     meetsLevelRequirement(upgrade, settings) &&
     isPrerequisiteMet(upgrade, settings, owned) &&
     !getOwnedRival(upgrade, owned) &&

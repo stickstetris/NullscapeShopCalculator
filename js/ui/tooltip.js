@@ -1,8 +1,8 @@
 import { tooltip } from '../dom.js';
 import { getBaseUpgradeCost } from '../pricing/upgrades.js';
-import { getEffectiveMinLevel, getPrerequisiteText, getExclusiveRivals, getEnemyRequirements, getMaxStacks } from '../rules.js';
+import { getEffectiveMinLevel, getPrerequisiteText, getExclusiveRivals, getEnemyRequirements, getMaxStacks, getReplacers, shouldShowUpgrade } from '../rules.js';
 import { getCurrentSettings } from '../settings.js';
-import { ownedUpgrades, getOwnedCount } from '../state.js';
+import { ownedUpgrades, getOwnedCount, findUpgrade } from '../state.js';
 import { getUpgradeCost, getPricedStack } from '../cart.js';
 
 const CURSOR_OFFSET = 14;
@@ -10,6 +10,18 @@ const CURSOR_OFFSET = 14;
 let activeUpgrade = null;
 
 export function showTooltip(upgrade) {
+  activeUpgrade = upgrade;
+  tooltip.hidden = false;
+
+  // Special styling for Blossom (earned)
+  if (upgrade.earned) {
+    tooltip.innerHTML = `
+      <h3>${upgrade.name}</h3>
+      <p class="earned-description">${upgrade.description}</p>
+    `;
+    return;
+  }
+
   const settings = getCurrentSettings();
   const owned = getOwnedCount(upgrade.name);
   const baseCost = getBaseUpgradeCost(upgrade, getPricedStack(upgrade, settings), settings);
@@ -17,6 +29,11 @@ export function showTooltip(upgrade) {
   const prerequisiteText = getPrerequisiteText(upgrade, settings, ownedUpgrades);
   const rivals = getExclusiveRivals(upgrade.name);
   const enemies = getEnemyRequirements(upgrade.name);
+  // Only name replacers that are currently shown, so hidden upgrades (Blossom before level 40) aren't spoiled.
+  const replacers = getReplacers(upgrade.name).filter((name) => {
+    const replacer = findUpgrade(name);
+    return replacer && shouldShowUpgrade(replacer, settings);
+  });
 
   tooltip.innerHTML = `
     <h3>${upgrade.name}</h3>
@@ -28,11 +45,9 @@ export function showTooltip(upgrade) {
     ${prerequisiteText ? `<p><strong>Requirement:</strong> ${prerequisiteText}</p>` : ''}
     ${enemies.length ? `<p><strong>Requires enemy:</strong> ${enemies.join(', ')}</p>` : ''}
     ${rivals.length ? `<p><strong>Exclusive with:</strong> ${rivals.join(', ')}</p>` : ''}
+    ${replacers.length ? `<p><strong>Removed by:</strong> ${replacers.join(', ')}</p>` : ''}
     <p>${upgrade.description}</p>
   `;
-
-  tooltip.hidden = false;
-  activeUpgrade = upgrade;
 }
 
 export function hideTooltip() {

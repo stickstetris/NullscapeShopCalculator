@@ -14,7 +14,8 @@ export function renderOwnedGrid(upgrades, settings, onChange) {
   visibleUpgrades.forEach((upgrade) => {
     const adjustedCost = getUpgradeCost(upgrade, settings);
     const availableByLevel = meetsLevelRequirement(upgrade, settings);
-    const affordable = settings.currentMoney >= adjustedCost && availableByLevel;
+    // Earned upgrades (e.g. Blossom) have no price, so only the level matters.
+    const affordable = (upgrade.earned || settings.currentMoney >= adjustedCost) && availableByLevel;
     const prerequisiteMet = isPrerequisiteMet(upgrade, settings, ownedUpgrades);
     const owned = getOwnedCount(upgrade.name);
     const maxStacks = getMaxStacks(upgrade, settings);
@@ -46,7 +47,10 @@ export function renderOwnedGrid(upgrades, settings, onChange) {
     cost.textContent = adjustedCost;
 
     card.appendChild(image);
-    card.appendChild(cost);
+
+    if (!upgrade.earned) {
+      card.appendChild(cost);
+    }
 
     if (owned > 0 && maxStacks > 1) {
       const ownedBadge = document.createElement('span');

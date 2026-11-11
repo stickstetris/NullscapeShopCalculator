@@ -577,5 +577,14 @@
     "costSoloExtreme": 35000,
     "max": 1,
     "minLevel": 30
+  },
+  {
+    "name": "Blossom",
+    "description": "TO MAKE THINGS EVEN.",
+    "image": "assets/blossom.png",
+    "cost": 0,
+    "max": 1,
+    "minLevel": 40,
+    "earned": true
   }
 ]
