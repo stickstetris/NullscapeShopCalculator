@@ -27,6 +27,7 @@ import { saveState, loadState, clearSavedState } from './storage.js';
 import { purchaseSelectedItems } from './cart.js';
 import { renderAll } from './ui/render.js';
 import { initHowToUseModal } from './ui/modal.js';
+import { initUpdateCheck } from './updateCheck.js';
 
 function render() {
   renderAll({ onOwnedChange: update, onSelectionChange: render });
@@ -104,6 +105,7 @@ playerCountInput.addEventListener('input', () => {
 resetButton.addEventListener('click', resetAll);
 purchaseItemsButton.addEventListener('click', purchase);
 initHowToUseModal();
+initUpdateCheck();
 
 loadUpgrades();
 loadCurses();

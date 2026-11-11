@@ -559,6 +559,25 @@ section {
   color: #f5d0fe;
 }
 
+#update-status.update-available {
+  color: #fde68a;
+  font-weight: 700;
+}
+
+.update-refresh {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #d8b4fe;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.update-refresh:hover {
+  color: #f5d0fe;
+}
+
 .footer-credit {
   display: block;
   margin-top: 4px;

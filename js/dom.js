@@ -25,6 +25,8 @@ export const purificationShopSection = byId('purification-shop-section');
 export const purificationShopGrid = byId('purification-shop-grid');
 export const purificationShopMoney = byId('purification-shop-money');
 
+export const updateStatus = byId('update-status');
+
 export const howToUseModal = byId('how-to-use-modal');
 export const openHowToUseButton = byId('open-how-to-use');
 export const closeHowToUseButton = byId('close-how-to-use');
