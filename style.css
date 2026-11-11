@@ -331,7 +331,8 @@ section {
   border-color: #93c5fd;
 }
 
-.shop-card.unaffordable {
+.shop-card.unaffordable,
+.shop-card.excluded {
   background: #7f1d1d;
   border-color: #ef4444;
 }

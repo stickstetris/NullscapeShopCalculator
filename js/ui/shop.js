@@ -1,5 +1,5 @@
 import { shopGrid, shopMoney } from '../dom.js';
-import { getShopItems } from '../rules.js';
+import { getShopItems, getExclusiveRivals } from '../rules.js';
 import { ownedUpgrades, selectedShopItems, toggleShopItem } from '../state.js';
 import { getUpgradeCost, canSelectShopItem, getCombinedRemainingMoney } from '../cart.js';
 
@@ -15,6 +15,8 @@ export function renderShop(upgrades, settings, onChange) {
   shopItems.forEach((upgrade) => {
     const cost = getUpgradeCost(upgrade, settings);
     const selected = selectedShopItems.has(upgrade.name);
+    // A picked upgrade that this one is mutually exclusive with (clicking this card swaps the pick).
+    const pickedRival = getExclusiveRivals(upgrade.name).find((name) => selectedShopItems.has(name));
 
     const card = document.createElement('button');
     card.type = 'button';
@@ -23,6 +25,11 @@ export function renderShop(upgrades, settings, onChange) {
 
     card.classList.toggle('selected', selected);
     card.classList.toggle('unaffordable', !selected && !canSelectShopItem(upgrade, settings));
+    card.classList.toggle('excluded', Boolean(pickedRival));
+
+    if (pickedRival) {
+      card.title = `Can't be taken with ${pickedRival}`;
+    }
 
     const image = document.createElement('img');
     image.src = upgrade.image;
