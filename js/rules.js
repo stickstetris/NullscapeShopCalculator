@@ -78,6 +78,10 @@ const ENEMY_REQUIREMENTS = {
   'Jet Boosters': ['Scrapmaw'],
 };
 
+export function getEnemyIcon(enemyName) {
+  return `assets/enemies/${enemyName.toLowerCase().replace(/ /g, '-')}.png`;
+}
+
 export function getEnemyRequirements(upgradeName) {
   return ENEMY_REQUIREMENTS[upgradeName] ?? [];
 }

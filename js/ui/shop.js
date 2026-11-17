@@ -1,5 +1,5 @@
 import { shopGrid, shopMoney } from '../dom.js';
-import { getShopItems, getExclusiveRivals } from '../rules.js';
+import { getShopItems, getExclusiveRivals, getEnemyRequirements, getEnemyIcon } from '../rules.js';
 import { ownedUpgrades, selectedShopItems, toggleShopItem } from '../state.js';
 import { getUpgradeCost, canSelectShopItem, getCombinedRemainingMoney } from '../cart.js';
 
@@ -49,6 +49,28 @@ export function renderShop(upgrades, settings, onChange) {
     card.appendChild(image);
     card.appendChild(name);
     card.appendChild(price);
+
+    // Enemies the upgrade needs in the run, shown as icons in the card's top-right corner.
+    const enemies = getEnemyRequirements(upgrade.name);
+
+    if (enemies.length) {
+      const badges = document.createElement('span');
+      badges.className = 'enemy-badges';
+
+      enemies.forEach((enemy) => {
+        const badge = document.createElement('img');
+        badge.className = 'enemy-badge';
+        badge.src = getEnemyIcon(enemy);
+        badge.alt = `Requires ${enemy}`;
+        badge.title = `Requires enemy: ${enemy}`;
+        badge.width = 40;
+        badge.height = 40;
+        badge.loading = 'lazy';
+        badges.appendChild(badge);
+      });
+
+      card.appendChild(badges);
+    }
 
     card.addEventListener('click', () => {
       toggleShopItem(upgrade);

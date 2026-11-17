@@ -321,6 +321,7 @@ section {
 }
 
 .shop-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -330,6 +331,21 @@ section {
   border-radius: 10px;
   background: transparent;
   color: #fff;
+}
+
+.enemy-badges {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shop-card .enemy-badge {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .shop-card img {
