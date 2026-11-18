@@ -2,26 +2,281 @@
   {
     "name": "LAP 2",
     "value": 400,
-    "image": "assets/lap-2.png"
-  },
-  {
-    "name": "Mart Slide",
-    "value": 330,
-    "image": "assets/mart-slide.png"
+    "image": "assets/curses/lap-2.png"
   },
   {
     "name": "Nothing?",
-    "value": 325,
-    "image": "assets/nothing.png"
+    "value": 400,
+    "image": "assets/curses/nothing.png"
+  },
+  {
+    "name": "Lower Gravity",
+    "value": 300,
+    "image": "assets/curses/lower-gravity.png"
+  },
+  {
+    "name": "Scattered Gifts",
+    "value": 300,
+    "image": "assets/curses/scattered-gifts.png"
+  },
+  {
+    "name": "Fragile Gifts",
+    "value": 300,
+    "image": "assets/curses/fragile-gifts.png"
   },
   {
     "name": "Bloodier Meat",
-    "value": 300,
-    "image": "assets/bloodier-meat.png"
+    "value": 225,
+    "image": "assets/curses/bloodier-meat.png"
   },
   {
     "name": "Beacon Mirage",
+    "value": 250,
+    "image": "assets/curses/beacon-mirage.png"
+  },
+  {
+    "name": "Higher Gravity",
     "value": 300,
-    "image": "assets/beacon-mirage.png"
+    "image": "assets/curses/higher-gravity.png"
+  },
+  {
+    "name": "Closer Husk",
+    "value": 300,
+    "image": "assets/curses/closer-husk.png"
+  },
+  {
+    "name": "Further Husk",
+    "value": 300,
+    "image": "assets/curses/further-husk.png"
+  },
+  {
+    "name": "Deadly Melody",
+    "value": 300,
+    "image": "assets/curses/deadly-melody.png"
+  },
+  {
+    "name": "Encore",
+    "value": 300,
+    "image": "assets/curses/encore.png"
+  },
+  {
+    "name": "Blade Carousel",
+    "value": 250,
+    "image": "assets/curses/blade-carousel.png"
+  },
+  {
+    "name": "Blueprint: Cross Beams",
+    "value": 250,
+    "image": "assets/curses/blueprint-cross-beams.png"
+  },
+  {
+    "name": "Blueprint: Efficient Coolant",
+    "value": 250,
+    "image": "assets/curses/blueprint-efficient-coolant.png"
+  },
+  {
+    "name": "Bigger Tripmines",
+    "value": 200,
+    "image": "assets/curses/bigger-tripmines.png"
+  },
+  {
+    "name": "Beacon Imp",
+    "value": 200,
+    "image": "assets/curses/beacon-imp.png"
+  },
+  {
+    "name": "Big Baby",
+    "value": 200,
+    "image": "assets/curses/big-baby.png"
+  },
+  {
+    "name": "Springloaded",
+    "value": 200,
+    "image": "assets/curses/springloaded.png"
+  },
+  {
+    "name": "Bigger Blast",
+    "value": 200,
+    "image": "assets/curses/bigger-blast.png"
+  },
+  {
+    "name": "Husk Express",
+    "value": 200,
+    "image": "assets/curses/husk-express.png"
+  },
+  {
+    "name": "Shotgun",
+    "value": 200,
+    "image": "assets/curses/shotgun.png"
+  },
+  {
+    "name": "Stronger Wings",
+    "value": 200,
+    "image": "assets/curses/stronger-wings.png"
+  },
+  {
+    "name": "Smart Little Bird",
+    "value": 200,
+    "image": "assets/curses/smart-little-bird.png"
+  },
+  {
+    "name": "Jumping Instruments",
+    "value": 200,
+    "image": "assets/curses/jumping-instruments.png"
+  },
+  {
+    "name": "Alluring Arrangement",
+    "value": 200,
+    "image": "assets/curses/alluring-arrangement.png"
+  },
+  {
+    "name": "Blueprint: Supersonic Lasers",
+    "value": 200,
+    "image": "assets/curses/blueprint-supersonic-lasers.png"
+  },
+  {
+    "name": "Baby Steps",
+    "value": 175,
+    "image": "assets/curses/baby-steps.png"
+  },
+  {
+    "name": "Sagittarius",
+    "value": 175,
+    "image": "assets/curses/sagittarius.png"
+  },
+  {
+    "name": "Volatile Implosions",
+    "value": 150,
+    "image": "assets/curses/volatile-implosions.png"
+  },
+  {
+    "name": "More Tripmines",
+    "value": 150,
+    "image": "assets/curses/more-tripmines.png"
+  },
+  {
+    "name": "Concussion",
+    "value": 150,
+    "image": "assets/curses/concussion.png"
+  },
+  {
+    "name": "Concussive Blast",
+    "value": 150,
+    "image": "assets/curses/concussive-blast.png"
+  },
+  {
+    "name": "Problem Child",
+    "value": 150,
+    "image": "assets/curses/problem-child.png"
+  },
+  {
+    "name": "Scorched Earth",
+    "value": 150,
+    "image": "assets/curses/scorched-earth.png"
+  },
+  {
+    "name": "Magic Missile",
+    "value": 150,
+    "image": "assets/curses/magic-missile.png"
+  },
+  {
+    "name": "Incendiary Shrapnel",
+    "value": 150,
+    "image": "assets/curses/incendiary-shrapnel.png"
+  },
+  {
+    "name": "Accurate Telefragger",
+    "value": 150,
+    "image": "assets/curses/accurate-telefragger.png"
+  },
+  {
+    "name": "Leo",
+    "value": 150,
+    "image": "assets/curses/leo.png"
+  },
+  {
+    "name": "Mighty Gong",
+    "value": 125,
+    "image": "assets/curses/mighty-gong.png"
+  },
+  {
+    "name": "Barotrauma",
+    "value": 100,
+    "image": "assets/curses/barotrauma.png"
+  },
+  {
+    "name": "Minefield",
+    "value": 100,
+    "image": "assets/curses/minefield.png"
+  },
+  {
+    "name": "Run",
+    "value": 100,
+    "image": "assets/curses/run.png"
+  },
+  {
+    "name": "Airborne Flesh",
+    "value": 100,
+    "image": "assets/curses/airborne-flesh.png"
+  },
+  {
+    "name": "Ambush",
+    "value": 100,
+    "image": "assets/curses/ambush.png"
+  },
+  {
+    "name": "Burning Bouquet",
+    "value": 100,
+    "image": "assets/curses/burning-bouquet.png"
+  },
+  {
+    "name": "Mighty Cavalry",
+    "value": 250,
+    "image": "assets/curses/mighty-cavalry.png"
+  },
+  {
+    "name": "Missile Silo",
+    "value": 250,
+    "image": "assets/curses/missile-silo.png"
+  },
+  {
+    "name": "Pacifier",
+    "value": 230,
+    "image": "assets/curses/pacifier.png"
+  },
+  {
+    "name": "Bloody Bell",
+    "value": 200,
+    "image": "assets/curses/bloody-bell.png"
+  },
+  {
+    "name": "Conga Line",
+    "value": 200,
+    "image": "assets/curses/conga-line.png"
+  },
+  {
+    "name": "Void Explosions",
+    "value": 200,
+    "image": "assets/curses/void-explosions.png"
+  },
+  {
+    "name": "Aries",
+    "value": 100,
+    "image": "assets/curses/aries.png"
+  },
+  {
+    "name": "Supernova",
+    "value": 100,
+    "image": "assets/curses/supernova.png"
+  },
+  {
+    "name": "Three Sixteenths",
+    "value": 150,
+    "image": "assets/curses/three-sixteenths.png"
+  },
+  {
+    "name": "Mart Slide",
+    "value": 350,
+    "image": "assets/curses/mart-slide.png"
   }
 ]

@@ -11,6 +11,7 @@ import {
   playerCountInput,
   difficultySelect,
   partySizeSelect,
+  curseSearchInput,
 } from './dom.js';
 import { fetchUpgrades, fetchCurses } from './data.js';
 import {
@@ -50,6 +51,7 @@ function resetAll() {
 
   resetRunSettings();
   clearSelections();
+  curseSearchInput.value = '';
   update();
 }
 
@@ -96,6 +98,8 @@ arroganceConceitDelusionInput.addEventListener('input', () => {
   clampOwnedToMax((upgrade) => getMaxStacks(upgrade, settings));
   update();
 });
+
+curseSearchInput.addEventListener('input', render);
 
 playerCountInput.addEventListener('input', () => {
   syncPartySizeWithPlayerCount();

@@ -24,6 +24,7 @@ export const arroganceConceitDelusionInput = byId('arrogance-conceit-delusion');
 export const purificationShopSection = byId('purification-shop-section');
 export const purificationShopGrid = byId('purification-shop-grid');
 export const purificationShopMoney = byId('purification-shop-money');
+export const curseSearchInput = byId('curse-search');
 
 export const updateStatus = byId('update-status');
 

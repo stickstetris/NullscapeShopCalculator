@@ -1,15 +1,35 @@
-import { purificationShopGrid, purificationShopMoney } from '../dom.js';
+import { purificationShopGrid, purificationShopMoney, curseSearchInput } from '../dom.js';
 import { selectedPurificationItems, togglePurificationItem } from '../state.js';
 import { getCurseCost, getCombinedSelectedCost, getCombinedRemainingMoney } from '../cart.js';
 
-// Cost to purify each curse at the current level.
+const MAX_SHOWN_CURSES = 5;
+
+function getShownCurses(curses, query) {
+  const search = query.trim().toLowerCase();
+  const picked = curses.filter((curse) => selectedPurificationItems.has(curse.name));
+  const matches = curses.filter((curse) =>
+    !selectedPurificationItems.has(curse.name) && curse.name.toLowerCase().includes(search));
+
+  return [...picked, ...matches.slice(0, Math.max(0, MAX_SHOWN_CURSES - picked.length))];
+}
+
+// Cost to purify curses at the current level.
 export function renderPurificationShop(curses, settings, onChange) {
   const combinedSelectedCost = getCombinedSelectedCost(settings);
+  const shownCurses = getShownCurses(curses, curseSearchInput.value);
 
   purificationShopMoney.textContent = `Golden Gifts left: ${getCombinedRemainingMoney(settings)}`;
   purificationShopGrid.innerHTML = '';
 
-  curses.forEach((curse) => {
+  if (shownCurses.length === 0) {
+    const empty = document.createElement('p');
+    empty.className = 'curse-search-empty';
+    empty.textContent = `No curses match "${curseSearchInput.value.trim()}".`;
+    purificationShopGrid.appendChild(empty);
+    return;
+  }
+
+  shownCurses.forEach((curse) => {
     const cost = getCurseCost(curse, settings);
     const selected = selectedPurificationItems.has(curse.name);
     const isAffordable = selected || combinedSelectedCost + cost <= settings.currentMoney;

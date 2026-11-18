@@ -409,6 +409,17 @@ section {
   width: 100%;
 }
 
+/* Shown in the purification grid when the curse search matches nothing. */
+.curse-search-empty {
+  grid-column: 1 / -1;
+  margin: 0.5rem 0;
+  color: #d8b4fe;
+}
+
+#purification-shop-section.shop-locked .shop-actions {
+  visibility: hidden;
+}
+
 .shop-lock-note {
   display: none;
 }
