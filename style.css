@@ -235,9 +235,9 @@ section {
   font-weight: 700;
 }
 
-.upgrade-card.not-yet-available,
-.upgrade-card.missing-prerequisite,
-.upgrade-card.excluded {
+.upgrade-card.not-yet-available > :not(.requirement-badge),
+.upgrade-card.missing-prerequisite > :not(.requirement-badge),
+.upgrade-card.excluded > :not(.requirement-badge) {
   opacity: 0.55;
 }
 
@@ -247,6 +247,15 @@ section {
 
 .upgrade-card.fully-owned {
   outline: 2px solid #93c5fd;
+}
+
+.upgrade-card .requirement-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 32px;
+  height: 32px;
+  aspect-ratio: auto;
 }
 
 .upgrade-owned {

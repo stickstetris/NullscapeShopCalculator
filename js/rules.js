@@ -86,43 +86,44 @@ export function getEnemyRequirements(upgradeName) {
   return ENEMY_REQUIREMENTS[upgradeName] ?? [];
 }
 
-// Returns '' when the prerequisite is met, otherwise text describing what is missing.
-// Any text returned here hides the upgrade from the shop; put enemy-only requirements in ENEMY_REQUIREMENTS instead.
-export function getPrerequisiteText(upgrade, settings, owned) {
-  if (RADAR_MODULES.includes(upgrade.name)) {
-    return ownsUpgrade(owned, 'Radar') ? '' : 'Radar';
+const UPGRADE_REQUIREMENTS = {
+  ...Object.fromEntries(RADAR_MODULES.map((name) => [name, { upgrade: 'Radar' }])),
+  'Pocket Bell': { upgrade: 'Double Jump' },
+  'Panic Necklace': { upgrade: 'Shield' },
+  'Subspacial Barrier': { upgrade: 'Defuse Kit', amount: 3, notOnCasual: true },
+  'Shark Tail': { upgrade: 'Ninja Belt' },
+  'Miniature Hourglass': { upgrade: 'Ninja Belt' },
+  'Drowned Ægis': { upgrade: 'More Altars' },
+  'Radar Module: Instruments': { upgrade: 'Radar' },
+  'Aggro Magnet': { upgrade: 'Gift Magnet' },
+  'Debuff Magnet': { upgrade: 'Gift Magnet' },
+  'Propeller Hat': { upgrade: 'Helmet' },
+  'Altar Boons': { upgrade: 'Paycheck' },
+  'Health Insurance': { upgrade: 'Paycheck' },
+  'Larger Grapple Points': { upgrade: 'Grapple Points' },
+};
+
+export function getMissingRequirement(upgrade, settings, owned) {
+  const requirement = UPGRADE_REQUIREMENTS[upgrade.name];
+
+  if (!requirement || (requirement.notOnCasual && settings.difficulty === 'Casual')) {
+    return null;
   }
 
-  switch (upgrade.name) {
-    case 'Pocket Bell':
-      return ownsUpgrade(owned, 'Double Jump') ? '' : 'Double Jump';
-    case 'Panic Necklace':
-      return ownsUpgrade(owned, 'Shield') ? '' : 'Shield';
-    case 'Subspacial Barrier':
-      return (ownsUpgrade(owned, 'Defuse Kit', 3) || settings.difficulty === 'Casual') ? '' : '3 stacks of Defuse Kit';
-    case 'Shark Tail':
-      return ownsUpgrade(owned, 'Ninja Belt') ? '' : 'Ninja Belt';
-    case 'Miniature Hourglass':
-      return ownsUpgrade(owned, 'Ninja Belt') ? '' : 'Ninja Belt';
-    case 'Drowned Ægis':
-      return ownsUpgrade(owned, 'More Altars') ? '' : 'More Altars';
-    case 'Radar Module: Instruments':
-      return ownsUpgrade(owned, 'Radar') ? '' : 'Radar';
-    case 'Aggro Magnet':
-      return ownsUpgrade(owned, 'Gift Magnet') ? '' : 'Gift Magnet';
-    case 'Debuff Magnet':
-      return ownsUpgrade(owned, 'Gift Magnet') ? '' : 'Gift Magnet';
-    case 'Propeller Hat':
-      return ownsUpgrade(owned, 'Helmet') ? '' : 'Helmet';
-    case 'Altar Boons':
-      return ownsUpgrade(owned, 'Paycheck') ? '' : 'Paycheck';
-    case 'Health Insurance':
-      return ownsUpgrade(owned, 'Paycheck') ? '' : 'Paycheck';
-    case 'Larger Grapple Points':
-      return ownsUpgrade(owned, 'Grapple Points') ? '' : 'Grapple Points';
-    default:
-      return '';
+  const amount = requirement.amount ?? 1;
+  return ownsUpgrade(owned, requirement.upgrade, amount) ? null : { upgrade: requirement.upgrade, amount };
+}
+
+// Returns '' when the prerequisite is met, otherwise text describing what is missing.
+// Any text returned here hides the upgrade from the shop.
+export function getPrerequisiteText(upgrade, settings, owned) {
+  const missing = getMissingRequirement(upgrade, settings, owned);
+
+  if (!missing) {
+    return '';
   }
+
+  return missing.amount > 1 ? `${missing.amount} stacks of ${missing.upgrade}` : missing.upgrade;
 }
 
 export function isPrerequisiteMet(upgrade, settings, owned) {

@@ -1,6 +1,6 @@
 import { upgradeGrid } from '../dom.js';
-import { getVisibleSortedUpgrades, meetsLevelRequirement, isPrerequisiteMet, getOwnedRival, getMaxStacks } from '../rules.js';
-import { ownedUpgrades, getOwnedCount, cycleOwnedCount } from '../state.js';
+import { getVisibleSortedUpgrades, meetsLevelRequirement, getMissingRequirement, getPrerequisiteText, getOwnedRival, getMaxStacks } from '../rules.js';
+import { ownedUpgrades, getOwnedCount, cycleOwnedCount, findUpgrade } from '../state.js';
 import { getUpgradeCost } from '../cart.js';
 import { showTooltip, hideTooltip, moveTooltip } from './tooltip.js';
 
@@ -16,7 +16,8 @@ export function renderOwnedGrid(upgrades, settings, onChange) {
     const availableByLevel = meetsLevelRequirement(upgrade, settings);
     // Earned upgrades (e.g. Blossom) have no price, so only the level matters.
     const affordable = (upgrade.earned || settings.currentMoney >= adjustedCost) && availableByLevel;
-    const prerequisiteMet = isPrerequisiteMet(upgrade, settings, ownedUpgrades);
+    const missingRequirement = getMissingRequirement(upgrade, settings, ownedUpgrades);
+    const prerequisiteMet = missingRequirement === null;
     const owned = getOwnedCount(upgrade.name);
     const maxStacks = getMaxStacks(upgrade, settings);
 
@@ -50,6 +51,21 @@ export function renderOwnedGrid(upgrades, settings, onChange) {
 
     if (!upgrade.earned) {
       card.appendChild(cost);
+    }
+
+    // While a required upgrade is missing, show its icon in the card's top-right corner.
+    const requiredUpgrade = missingRequirement && findUpgrade(missingRequirement.upgrade);
+
+    if (requiredUpgrade) {
+      const badge = document.createElement('img');
+      badge.className = 'requirement-badge';
+      badge.src = requiredUpgrade.image;
+      badge.alt = `Requires ${requiredUpgrade.name}`;
+      badge.title = `Requires ${getPrerequisiteText(upgrade, settings, ownedUpgrades)}`;
+      badge.width = 32;
+      badge.height = 32;
+      badge.loading = 'lazy';
+      card.appendChild(badge);
     }
 
     if (owned > 0 && maxStacks > 1) {
