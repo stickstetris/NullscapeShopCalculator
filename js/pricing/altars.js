@@ -1,5 +1,4 @@
-// TODO: Dependence multiplier is not known yet.
-const DEPENDENCE_MULTIPLIER = 0.5;
+const DEPENDENCE_MULTIPLIER = 0.8;
 
 function isSoloOrDuo(partySize) {
   return partySize === 'solo' || partySize === 'duo';
