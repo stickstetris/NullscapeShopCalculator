@@ -1,9 +1,11 @@
 // Notices when a newer version of the site has been deployed and offers a refresh.
-// GitHub Pages stamps every file of a deploy with the same Last-Modified time, so comparing the
+// GitHub Pages stamps a deploy's files with roughly the deploy time (Last-Modified), so comparing the
 // loaded page's time with the server's tells us whether this copy is outdated.
 import { updateStatus } from './dom.js';
 
 const CHECK_INTERVAL_MS = 5 * 60 * 1000;
+
+const MIN_NEWER_DEPLOY_MS = 5 * 60 * 1000;
 
 // Last-Modified of the page as it was loaded (from the network or the browser cache).
 const loadedVersion = new Date(document.lastModified);
@@ -53,8 +55,7 @@ async function checkForUpdate() {
   try {
     const serverVersion = await fetchServerVersion();
 
-    // Compare to the second: Last-Modified has no finer precision.
-    if (serverVersion && Math.floor(serverVersion / 1000) > Math.floor(loadedVersion / 1000)) {
+    if (serverVersion && serverVersion - loadedVersion > MIN_NEWER_DEPLOY_MS) {
       showUpdateAvailable();
       clearInterval(checkTimer);
       document.removeEventListener('visibilitychange', onVisibilityChange);
