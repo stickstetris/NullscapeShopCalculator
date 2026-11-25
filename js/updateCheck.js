@@ -7,6 +7,8 @@ const CHECK_INTERVAL_MS = 5 * 60 * 1000;
 
 const MIN_NEWER_DEPLOY_MS = 5 * 60 * 1000;
 
+const COMMIT_HISTORY_URL = 'https://github.com/stickstetris/NullscapeShopCalculator/commits/main';
+
 // Last-Modified of the page as it was loaded (from the network or the browser cache).
 const loadedVersion = new Date(document.lastModified);
 
@@ -21,7 +23,13 @@ async function fetchServerVersion() {
 }
 
 function showLastUpdated() {
-  updateStatus.textContent = `Last updated ${dateFormat.format(loadedVersion)}. `;
+  const link = document.createElement('a');
+  link.href = COMMIT_HISTORY_URL;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = `Last updated ${dateFormat.format(loadedVersion)}`;
+
+  updateStatus.replaceChildren(link, '. ');
 }
 
 function showUpdateAvailable() {
